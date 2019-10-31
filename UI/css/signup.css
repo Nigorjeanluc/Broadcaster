@@ -1,0 +1,298 @@
+@import 'fonts.css';
+@import 'config.css';
+
+/* Style the top navigation bar */
+
+.topnav {
+    padding: 10px;
+    overflow: hidden;
+    background-color: #01260E;
+}
+
+
+/* Style the topnav links */
+
+.topnav a.logo {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 16px 32px 16px 50px;
+    color: #fff;
+    font-family: 'Berkshire Swash', cursive;
+    text-decoration: none;
+    font-size: 2em;
+    border-right: 3px solid #fff;
+}
+
+
+/* Style the content */
+
+.content {
+    background: none;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.content .signup-box {
+    background-color: rgba(255, 255, 255, 0.965);
+    width: 100%;
+    border-top: 5px solid #455931;
+    margin-bottom: 80px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px;
+}
+
+.content .signup-box .header {
+    font-family: 'Berkshire Swash', cursive;
+    font-weight: 500;
+    line-height: 50px;
+    border-bottom: 2px solid #bbb;
+}
+
+.content .signup-box .body {
+    padding: 10px;
+    height: auto;
+}
+
+.content .signup-box .body label {
+    padding: 1px;
+    color: #455931;
+    font-family: 'Berkshire Swash', cursive;
+}
+
+.content .signup-box .body input[type=text] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    font-size: .9em;
+    border: 3px solid #455931;
+    border-radius: 5px;
+    background: #f1f1f1;
+    font-family: 'Prompt', sans-serif;
+}
+
+.content .signup-box .body input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    font-size: .9em;
+    border: 3px solid #455931;
+    border-radius: 5px;
+    background: #f1f1f1;
+}
+
+
+/* Set a style for all paragraphs in box body*/
+
+.content .signup-box .body p {
+    text-align: center;
+    line-height: 20px;
+    font-family: 'Prompt', sans-serif;
+}
+
+
+/* Set a style for all buttons in box body*/
+
+.content .signup-box .body a {
+    background-color: #455931;
+    text-align: center;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.content .signup-box .body a:hover {
+    opacity: 1;
+}
+
+
+/* Extra styles for the cancel button and sign in button*/
+
+.content .signup-box .body .signinbtn {
+    color: dodgerblue;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+/* Clear floats */
+
+.content .signup-box .body .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.content .signup-box .body .cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+    width: 100%;
+    font-family: 'Berkshire Swash', cursive;
+}
+
+.content .signup-box .body .signupbtn {
+    width: 100%;
+    font-family: 'Berkshire Swash', cursive;
+}
+
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+    .content .signup-box {
+        width: 50%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .content .signup-box {
+        width: 50%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .content .signup-box {
+        width: 50%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .content .signup-box {
+        width: 60%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .content .signup-box {
+        width: 70%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .content .signup-box {
+        width: 100%;
+    }
+    /* Float cancel and signup buttons and add an equal width */
+    .content .signup-box .body .cancelbtn {
+        float: left;
+        width: 50%;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .content .signup-box .body .signupbtn {
+        float: left;
+        width: 50%;
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+
+
+/* Style the footer */
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    background-color: #01260E;
+    color: #fff;
+    width: 100%;
+    height: 60px;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Berkshire Swash', cursive;
+}
