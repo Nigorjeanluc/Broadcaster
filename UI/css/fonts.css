@@ -1,0 +1,18 @@
+/* font-family: 'Berkshire Swash', cursive; */
+
+@import url('https://fonts.googleapis.com/css?family=Berkshire+Swash&display=swap');
+
+/* font-family: 'Pacifico', cursive; */
+
+@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+
+/* font-family: 'Delius Unicase', cursive; */
+
+@import url('https://fonts.googleapis.com/css?family=Delius+Unicase&display=swap');
+
+/* font-family: 'Prompt', sans-serif; */
+
+@import url('https://fonts.googleapis.com/css?family=Prompt&display=swap');
+
+/* Load an icon library to show font-awesome icons */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
