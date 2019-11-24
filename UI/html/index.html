@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - Broadcaster</title>
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="topnav" id="myTopnav">
+            <a href="index.html" class="logo">Broadcaster</a>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#news">All Entries</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" class="logout">Logout</a>
+            <a href="#" class="icon">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+
+        <div class="content">
+            <div class="entry-box">
+                <div class="header">
+                    <center>
+                        <h1>Add a new red-flag or intervention</h1>
+                    </center>
+                </div>
+                <div class="body">
+                    <form>
+                        <label>Title</label>
+                        <input type="text" name="title" placeholder="Enter the title here..." required/>
+                        <label>Type</label>
+                        <select name="type">
+                            <option value="red-flag">Red-flag</option> 
+                            <option value="intervention" selected>Intervention</option>
+                        </select>
+                        <button type="button">Add location</button>
+                        <div class="addlocation">
+                            <label>Location</label>
+                            <input type="text" name="location" placeholder="Enter the location here..." required disabled/>
+                        </div>
+                        <label>Status</label>
+                        <input type="text" name="status" value="Draft" disabled/>
+                        <div class="row">
+                            <div style="width: 50%">
+                                <label>Add Image(s)</label>
+                                <input type="file" name="images" required/>
+                            </div>
+                            <div style="width: 50%">
+                                <label>Add Video(s)</label>
+                                <input type="file" name="videos" required/>
+                            </div>
+                        </div>
+                        <label>Comment</label>
+                        <textarea oninput="autoGrow(this)" name="comment"></textarea>
+                        <a>Submit</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 class="title">Recent entries</h1>
+        </div>
+
+        <div class="content">
+            <div class="entry-box">
+                <div class="header">
+                    <p><img class="avatar" src="../img/index.png" /></p>
+                    <h1>Title: <span>Corruption case at Gishushu center</span></h1>
+                </div>
+                <div class="body">
+                    <p class="cont">Entry Type: <span>Red-Flag</span></p>
+                    <p class="cont loc">Location: Latitude: -1.9627183, Longitude: 30.0645122</p>
+                    <p class="cont">Comment: <span>Ahahahahaahahahh</span></p>
+                    <hr>
+                    <p>Status: <span class="status resolve">Resolved</span></p>
+                    <hr>
+                    <p class="inline-bottons">
+                        <span class="bottons">
+                            <a href="#" class="loc myBtn0"><i class="fa fa-map-marker"></i> Add Location </a>
+                            <a href="#" class="img myBtn1"><i class="fa fa-image"></i> Add Image</a>
+                            <a href="#" class="vid myBtn2"><i class="fa fa-film"></i> Add Video</a>
+                            <a href="#" class="del myBtn3"><i class="fa fa-trash"></i> Delete</a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="entry-box intervention">
+                <div class="header">
+                    <p><img class="avatar" src="../img/index.png" /></p>
+                    <h1>Title: <span>Corruption case at Gishushu center</span></h1>
+                </div>
+                <div class="body">
+                    <p class="cont">Entry Type: <span>Red-Flag</span></p>
+                    <p class="cont loc">Location: Latitude: -1.9627183, Longitude: 30.0645122</p>
+                    <p class="cont">Comment: <span>Ahahahahaahahahh</span></p>
+                    <hr>
+                    <p>Status: <span class="status invest">Under Investigation</span></p>
+                    <hr>
+                    <p class="inline-bottons">
+                        <span class="bottons">
+                            <a href="#" class="loc myBtn0"><i class="fa fa-map-marker"></i> Add Location </a>
+                            <a href="#" class="img myBtn1"><i class="fa fa-image"></i> Add Image</a>
+                            <a href="#" class="vid myBtn2"><i class="fa fa-film"></i> Add Video</a>
+                            <a href="#" class="del myBtn3"><i class="fa fa-trash"></i> Delete</a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="entry-box draft">
+                <div class="header">
+                    <p><img class="avatar" src="../img/index.png" /></p>
+                    <h1>Title: <span>Corruption case at Gishushu center</span></h1>
+                </div>
+                <div class="body">
+                    <p class="cont">Entry Type: <span>Red-Flag</span></p>
+                    <p class="cont loc">Location: Latitude: -1.9627183, Longitude: 30.0645122</p>
+                    <p class="cont">Comment: <span>Ahahahahaahahahh</span></p>
+                    <hr>
+                    <p>Status: <span class="status draft">Draft</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="entry-box red-flag bottom">
+                <div class="header">
+                    <p><img class="avatar" src="../img/index.png" /></p>
+                    <h1>Title: <span>Corruption case at Gishushu center</span></h1>
+                </div>
+                <div class="body">
+                    <p class="cont">Entry Type: <span>Red-Flag</span></p>
+                    <p class="cont loc">Location: Latitude: -1.9627183, Longitude: 30.0645122</p>
+                    <p class="cont">Comment: <span>Ahahahahaahahahh</span></p>
+                    <hr>
+                    <p>Status: <span class="status reject">Rejected</span></p>
+                    <hr>
+                    <p class="inline-bottons">
+                        <span class="bottons">
+                            <a href="#" class="loc myBtn0"><i class="fa fa-map-marker"></i> Add Location </a>
+                            <a href="#" class="img myBtn1"><i class="fa fa-image"></i> Add Image</a>
+                            <a href="#" class="vid myBtn2"><i class="fa fa-film"></i> Add Video</a>
+                            <a href="#" class="del myBtn3"><i class="fa fa-trash"></i> Delete</a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal Location One -->
+        <div id="myModal0" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="header">
+                    <span class="close">&times;</span>
+                    <h1>Add a Location</h1>
+                </div>
+                <div class="body">
+                    <p><button class="btnLoc">Add new Location</button></p>
+                    <div class="addloc">
+                        <label>Location</label>
+                        <input type="text" required>
+                    </div>
+                    <p>
+                        <button class="close">Cancel</button>
+                        <button class="close saver">Change</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal Image One -->
+        <div id="myModal1" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="header">
+                    <span class="close">&times;</span>
+                    <h1>Add a Image</h1>
+                </div>
+                <div class="body">
+                    <label>Add a new image</label>
+                    <input type="file" required>
+                    <p>
+                        <button class="close">Cancel</button>
+                        <button class="close saver">Save</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal Video One -->
+        <div id="myModal2" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="header">
+                    <span class="close">&times;</span>
+                    <h1>Add a video</h1>
+                </div>
+                <div class="body">
+                    <label>Add a new video</label>
+                    <input type="file" required>
+                    <p>
+                        <button class="close">Cancel</button>
+                        <button class="close saver">Save</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal Delete One -->
+        <div id="myModal3" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content del">
+                <div class="header">
+                    <span class="close">&times;</span>
+                    <h1>Delete this Entry</h1>
+                </div>
+                <div class="body">
+                    <h1>Do you realy want to delete this entry? This action is not reversible</h1>
+                    <p>
+                        <button class="close">Cancel</button>
+                        <button class="close del">Delete</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy 2019
+        </div>
+    </div>
+    <script src="../js/main.js"></script>
+    <script src="../js/model.js"></script>
+
+</body>
+
+</html>
