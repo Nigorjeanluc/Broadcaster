@@ -1,5 +1,6 @@
 @import 'fonts.css';
 @import 'config.css';
+@import 'style.css';
 
 /* Style the top navigation bar */
 
@@ -189,22 +190,120 @@
 }
 
 .content .card1 {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    min-width: 40%;
-    margin: auto;
+    border-top: 3px solid #01260E;
+    border-radius: 5px;
+    background-color: #fff;
+    min-width: calc(30% - 10px);
+    margin: 0px 5px;
+    padding: 20px;
+    font-family: 'Prompt', sans-serif;
+    height: 100%;
     text-align: center;
+}
+
+.content .card1 h1 {
+    margin: 10px 0;
+}
+
+.content .card1 p {
+    margin-bottom: 10px;
 }
 
 .content .card2 {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    min-width: 100%;
-    margin: auto;
+    border-radius: 5px;
+    background: none;
+    min-width: calc(70% - 10px);
+    margin: 0px 5px;
     text-align: center;
 }
 
-.content .title {
-    color: grey;
+
+/* Float four columns side by side */
+
+.content .card2 .column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+
+/* Remove extra left and right margins, due to padding in columns */
+
+.content .card2 .row {
+    margin: 0 -5px;
+}
+
+
+/* Clear floats after the columns */
+
+.content .card2 .row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.content .card2 h1 {
+    line-height: 20px;
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 1.7em;
+    margin: 20px 0px;
+    color: #f1f1f1;
+    text-shadow: 0px 5px 5px #000;
+}
+
+
+/* Style the counter cards */
+
+.content .card2 .card {
+    border-top: 3px solid #01260E;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+    background-color: #f1f1f1;
+}
+
+.content .card2 .card h1 {
+    line-height: 20px;
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 3em;
+    margin: 10px 0px;
+    color: #000000;
+    text-shadow: 0px 0px 0px #000;
+}
+
+.content .card2 .card p {
+    margin-top: 20px;
+    font-family: 'Prompt', sans-serif;
+    font-weight: 800;
+}
+
+
+/* Responsive columns - one column layout (vertical) on small screens */
+
+@media screen and (max-width: 600px) {
+    .content .card1 {
+        width: 100% !important;
+    }
+    .content .card2 {
+        width: 100% !important;
+    }
+    .content .card2 .column {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+    }
+}
+
+.content .titleprofile {
+    color: rgb(255, 255, 255);
+    font-family: 'Berkshire Swash', cursive;
+    border-bottom: 3px solid #01260E;
+    line-height: 60px;
+    text-shadow: 0px 5px 15px #000;
     font-size: 18px;
+    font-size: 1.5em;
 }
 
 .content button {
