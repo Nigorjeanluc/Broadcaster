@@ -17,7 +17,6 @@ describe('Endpoint /', () => {
     });
 
     it("should not allow wrong urls", done => {
-        const id = 1;
         Chai.request(app)
             .get("/anywrongurl/")
             .end((err, res) => {
