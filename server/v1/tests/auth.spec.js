@@ -68,3 +68,69 @@ describe('Endpoint /api/v1/auth/signup', () => {
             });
     });
 });
+
+describe('Endpoint /api/v1/auth/signin', () => {
+    it("should signin a user with an account", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signin")
+            .send({ email: usersTester[1].email, password: usersTester[1].password })
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.have.property("data");
+                res.body.data.should.have.property("token");
+                res.body.should.have.property(
+                    "message",
+                    "User is successfully logged in"
+                );
+                done();
+            });
+    });
+
+    it("should not signin a user who don't have an account", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signin")
+            .send({ email: usersTester[2].email, password: usersTester[2].password })
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property(
+                    "error",
+                    "Auth failed"
+                );
+                done();
+            });
+    });
+
+    it("should not signin a user if authentication failed", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signin")
+            .send({ email: usersTester[2].email, password: usersTester[2].password })
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property("error", "Auth failed");
+                done();
+            });
+    });
+
+    it("should not signin a user with wrong password", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signin")
+            .send({ email: usersTester[1].email, password: usersTester[2].password })
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property("error", "Wrong password");
+                done();
+            });
+    });
+
+    it("should not signin a user if there is a validation error", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signin")
+            .send({ email: 'cynthiagmail.com', password: usersTester[2].password })
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.have.property("error");
+                done();
+            });
+    });
+
+});
