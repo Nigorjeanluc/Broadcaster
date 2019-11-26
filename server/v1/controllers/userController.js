@@ -20,7 +20,7 @@ class UserController {
             status: 201,
             message: 'User created successfully',
             data: {
-                token: Auth.generateToken(user.email, user.id),
+                token: Auth.generateToken(user.email, user.id, user.isAdmin),
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
@@ -43,7 +43,7 @@ class UserController {
                     status: 200,
                     message: 'User is successfully logged in',
                     data: {
-                        token: Auth.generateToken(hasAccount.email, hasAccount.id),
+                        token: Auth.generateToken(hasAccount.email, hasAccount.id, hasAccount.isAdmin),
                         firstname: hasAccount.firstname,
                         lastname: hasAccount.lastname,
                         email: hasAccount.email,
