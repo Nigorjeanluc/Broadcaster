@@ -31,6 +31,12 @@ const entriesTester = [{
     images: ['uploads/home3.jpg', 'uploads/home3.jpg'],
     videos: ['uploads/home3.jpg', 'uploads/home3.jpg'],
     comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
+}, {
+    title: "",
+    location: "Lat", // Lat Long coordinates
+    images: ['uploads/home3.jpg', 'uploads/home3.jpg'],
+    videos: ['uploads/home3.jpg', 'uploads/home3.jpg'],
+    comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
 }];
 
 describe('Endpoint POST /api/v1/:type', () => {
@@ -76,6 +82,32 @@ describe('Endpoint POST /api/v1/:type', () => {
             });
         done();
     });
+    it("should create a new red-flag when user has an account",
+        async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v1/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('title', entriesTester[2].title)
+                .field('location', entriesTester[2].location)
+                .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+                .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+                .field('comment', entriesTester[2].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a('string');
+        },
+    );
+    // it("should not create a new red-flag with invalid entities", done => {
+    //     Chai.request(app).post(`/api/v1/red-flags`)
+    //         .set("Authorization", `Bearer ${validTokens.savedUser}`)
+    //         .set("Content-Type", 'application/x-www-form-urlencoded')
+    //         .send(entriesTester[2])
+    //         .end((err, res) => {
+    //             res.should.have.status(400);
+    //             res.body.should.have.property("error");
+    //         });
+    //     done();
+    // });
     it("should not create a new intervention when user has no account", done => {
         Chai.request(app).post(`/api/v1/interventions`)
             .set("Authorization", `Bearer ${validTokens.unsavedUser}`)
