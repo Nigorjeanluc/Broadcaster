@@ -188,6 +188,26 @@
     justify-content: center;
 }
 
+.content p {
+    margin: 20px 0px;
+}
+
+.content p a {
+    background-color: #455931;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border: 0px;
+    border-radius: 5px;
+    font-family: 'Prompt', sans-serif;
+}
+
+.content p a:hover {
+    background-color: #c8ff91ab;
+    color: rgb(0, 0, 0);
+}
+
 .content .title {
     display: block;
     font-family: 'Berkshire Swash', cursive;
@@ -250,6 +270,30 @@
     height: auto;
 }
 
+.content .entry-box .body.view {
+    padding: 10px;
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.1em;
+    height: auto;
+}
+
+.content .entry-box table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.content .entry-box td,
+.content .entry-box th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.content .entry-box tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
 .content .entry-box .body .cont {
     margin-bottom: 10px;
 }
@@ -270,11 +314,39 @@
 }
 
 .content .entry-box .body .bottons a {
-    border: 2px solid #01260E;
-    color: #01260E;
+    border: 2px solid rgba(1, 38, 14, 0.863);
+    color: rgb(0, 0, 0);
     padding: 5px 10px;
     margin-right: 10px;
     border-radius: 5px;
+}
+
+.content .entry-box .body td a.title {
+    background: none;
+    text-decoration: none;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    color: black;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1em;
+}
+
+.content .entry-box .body td .bottons {
+    display: flex;
+}
+
+.content .entry-box .body td .bottons a {
+    border: 2px solid rgba(1, 38, 14, 0.89);
+    color: rgb(0, 0, 0);
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.content .entry-box .body td .bottons .notallowed {
+    font-size: 0.8em;
 }
 
 .content .entry-box .body .bottons a:hover {
@@ -284,6 +356,11 @@
 
 .content .entry-box .body .status:hover {
     cursor: pointer;
+}
+
+.content .entry-box .body td .status {
+    text-align: center;
+    display: block;
 }
 
 .content .entry-box .body .status.draft {
