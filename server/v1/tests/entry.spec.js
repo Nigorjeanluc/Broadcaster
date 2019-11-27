@@ -257,3 +257,63 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
         done();
     });
 });
+
+describe('Endpoint DELETE /api/v1/:type/:id', () => {
+
+    it("should delete owner's entry", done => {
+        Chai.request(app)
+            .delete("/api/v1/red-flags/1")
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(204);
+                done();
+            });
+    });
+
+    it("should not delete entry if user isn't owner", done => {
+        Chai.request(app)
+            .delete("/api/v1/red-flags/1")
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'No red-flag entry with id: 1 found');
+                done();
+            });
+    });
+
+    it("should not delete with invalid id", done => {
+        Chai.request(app)
+            .delete("/api/v1/red-flags/1000sdsddsa")
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'Endpoint not found');
+                done();
+            });
+    });
+
+    it("should not delete entry without a token", done => {
+        Chai.request(app)
+            .delete("/api/v1/interventions/2")
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'Please provide a token first');
+                done();
+            });
+    });
+
+    it("should not delete entry with an invalid token", done => {
+        Chai.request(app)
+            .delete("/api/v1/interventions/2")
+            .set("Authorization", `Bearer ${invalidToken}`)
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'Auth failed');
+                done();
+            });
+    });
+});
