@@ -18,6 +18,10 @@ class User {
         return users.find(user => user.email === email);
     }
 
+    static usernameExists(username) {
+        return users.find(user => user.username === username);
+    }
+
     static userSaved(user) {
         return users.push(user);
     }

@@ -12,10 +12,10 @@ class EntryController {
 
         res.status(201).json({
             status: 201,
-            data: [{
+            data: {
                 id: entry.id,
                 message: `New ${entry.type} record was created successfully`
-            }]
+            }
         });
     }
 
