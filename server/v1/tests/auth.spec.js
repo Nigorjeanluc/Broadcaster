@@ -8,16 +8,16 @@ Chai.use(chaiHttp);
 const usersTester = [{
     firstname: 'Jean-Luc',
     lastname: 'Ndiramiye',
-    email: 'nigorjeanluc@gmail.com',
+    email: 'nigorjean@gmail.com',
     phoneNumber: '0789660036',
-    username: 'KingJay',
+    username: 'KingMe',
     password: '1234567890'
 }, {
     firstname: 'Robert',
     lastname: 'Ndiramiye',
     email: 'robert@gmail.com',
     phoneNumber: '0789660037',
-    username: 'KingRob',
+    username: 'KingRobb',
     password: '123456789'
 }, {
     firstname: 'Robert',
@@ -25,6 +25,13 @@ const usersTester = [{
     phoneNumber: '0789660036',
     username: 'QueenCycy',
     password: '123456789999'
+}, {
+    firstname: 'Robert',
+    lastname: 'Ndiramiye',
+    email: 'roberttt@gmail.com',
+    phoneNumber: '0789660037',
+    username: 'KingRob',
+    password: '123456789'
 }];
 
 
@@ -52,6 +59,20 @@ describe('Endpoint /api/v1/auth/signup', () => {
                 res.body.should.have.property(
                     "error",
                     "The email already exists"
+                );
+                done();
+            });
+    });
+
+    it("should not create a new user if username exist", done => {
+        Chai.request(app)
+            .post("/api/v1/auth/signup")
+            .send(usersTester[3])
+            .end((err, res) => {
+                res.should.have.status(409);
+                res.body.should.have.property(
+                    "error",
+                    `${usersTester[3].username} username already exists`
                 );
                 done();
             });

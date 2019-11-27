@@ -52,7 +52,7 @@ describe('Endpoint POST /api/v1/:type', () => {
                 .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
                 .field('comment', entriesTester[0].comment);
             expect(res.body.status).to.equal(201);
-            expect(res.body.data).to.be.an('array').with.lengthOf(1);
+            expect(res.body.data).to.be.an('object');
         },
     );
     it("should create a new intervention when user has an account",
@@ -67,7 +67,7 @@ describe('Endpoint POST /api/v1/:type', () => {
                 .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
                 .field('comment', entriesTester[1].comment);
             expect(res.body.status).to.equal(201);
-            expect(res.body.data).to.be.an('array').with.lengthOf(1);
+            expect(res.body.data).to.be.an('object');
         },
     );
 
@@ -79,6 +79,16 @@ describe('Endpoint POST /api/v1/:type', () => {
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.have.property("error", "Sign up first please");
+            });
+        done();
+    });
+    it("should not create a new red-flag when user has not provided a token", done => {
+        Chai.request(app).post(`/api/v1/red-flags`)
+            .set("Content-Type", 'application/x-www-form-urlencoded')
+            .send(entriesTester[0])
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.have.property("error", "Please provide a token first");
             });
         done();
     });
