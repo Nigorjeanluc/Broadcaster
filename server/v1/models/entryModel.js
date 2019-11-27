@@ -17,6 +17,10 @@ class Entry {
     static entrySaved(entry) {
         return entries.push(entry);
     }
+
+    static sameType(userId, type) {
+        return entries.filter(entry => entry.type === type).filter(entry => entry.createdBy === parseInt(userId, 10));
+    }
 }
 
 export default Entry;
