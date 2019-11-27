@@ -178,6 +178,7 @@ describe('Endpoint GET /api/v1/:type', () => {
 describe('Endpoint GET /api/v1/:type/:id', () => {
     it("should retrieve entry with approrpiate type: red-flag", done => {
         Chai.request(app).get(`/api/v1/red-flags/1`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.have.property("status");
@@ -187,6 +188,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should retrieve entry with approrpiate type: intervention", done => {
         Chai.request(app).get(`/api/v1/interventions/2`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.have.property("status");
@@ -196,6 +198,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve entry with inapprorpiate type: red-flag", done => {
         Chai.request(app).get(`/api/v1/red-flags/2`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
@@ -205,6 +208,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve entry with inapprorpiate type: intervention", done => {
         Chai.request(app).get(`/api/v1/interventions/1`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
@@ -214,6 +218,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve unsaved red-flag entries", done => {
         Chai.request(app).get(`/api/v1/red-flags/1000`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
@@ -223,6 +228,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve unsaved intervention entries", done => {
         Chai.request(app).get(`/api/v1/interventions/1000`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
@@ -232,6 +238,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve entry with inapprorpiate id", done => {
         Chai.request(app).get(`/api/v1/interventions/1fgsgsdgsdfgfdsgf`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
@@ -241,6 +248,7 @@ describe('Endpoint GET /api/v1/:type/:id', () => {
     });
     it("should not retrieve entry with invalid type", done => {
         Chai.request(app).get(`/api/v1/interves/1`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
                 res.should.have.status(404);
                 res.body.should.have.property("status");
