@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 class Auth {
-    static generateToken(email, id) {
-        return jwt.sign({ email, id },
-            process.env.KEY
+    static generateToken(email, id, isAdmin) {
+        return jwt.sign({ email, id, isAdmin },
+            process.env.KEY, { expiresIn: '3h' }
         );
     }
 
