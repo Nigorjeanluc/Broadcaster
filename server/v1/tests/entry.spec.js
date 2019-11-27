@@ -122,3 +122,45 @@ describe('Endpoint POST /api/v1/:type', () => {
         },
     );
 });
+
+describe('Endpoint GET /api/v1/:type', () => {
+    it("should retrieve all red-flags posted by a user", done => {
+        Chai.request(app).get(`/api/v1/red-flags`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.have.property("data");
+            });
+        done();
+    });
+
+    it("should retrieve all interventions posted by a user", done => {
+        Chai.request(app).get(`/api/v1/interventions`)
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.have.property("data");
+            });
+        done();
+    });
+
+    it("should return 404 error if a user did not report a red-flag", done => {
+        Chai.request(app).get(`/api/v1/red-flags`)
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("error", `No red-flag entries found`);
+            });
+        done();
+    });
+
+    it("should return 404 error if a user did not report an intervetnion", done => {
+        Chai.request(app).get(`/api/v1/interventions`)
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("error", `No intervention entries found`);
+            });
+        done();
+    });
+});
