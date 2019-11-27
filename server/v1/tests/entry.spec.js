@@ -97,17 +97,6 @@ describe('Endpoint POST /api/v1/:type', () => {
             expect(res.body.error).to.be.a('string');
         },
     );
-    // it("should not create a new red-flag with invalid entities", done => {
-    //     Chai.request(app).post(`/api/v1/red-flags`)
-    //         .set("Authorization", `Bearer ${validTokens.savedUser}`)
-    //         .set("Content-Type", 'application/x-www-form-urlencoded')
-    //         .send(entriesTester[2])
-    //         .end((err, res) => {
-    //             res.should.have.status(400);
-    //             res.body.should.have.property("error");
-    //         });
-    //     done();
-    // });
     it("should not create a new intervention when user has no account", done => {
         Chai.request(app).post(`/api/v1/interventions`)
             .set("Authorization", `Bearer ${validTokens.unsavedUser}`)

@@ -14,7 +14,7 @@ class EntryController {
             status: 201,
             data: [{
                 id: entry.id,
-                message: `Created ${entry.type} record`
+                message: `New ${entry.type} record was created successfully`
             }]
         });
     }

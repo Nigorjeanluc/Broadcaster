@@ -4,8 +4,8 @@ export default (req, res, next) => {
     if (!condition) {
         return res.status(404).json({
             status: 404,
-            error: 'Endpoint not found'
+            error: `${type} type is unknown, use only red-flags or interventions as type`
         });
     }
     return next();
-}
+};
