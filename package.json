@@ -7,8 +7,6 @@
         "start": "npm run build && node --require @babel/polyfill dist/app.js",
         "test": "nyc --reporter=text --reporter=lcov mocha --require @babel/register --require @babel/polyfill ./server/v1/tests/*.spec.js --exit",
         "dev": "nodemon --exec babel-node ./server/app.js",
-        "createtables": "node --require @babel/polyfill --require @babel/register server/v2/models/addTables",
-        "droptables": "node --require @babel/polyfill --require @babel/register server/v2/models/deleteTables",
         "coveralls": "npm test && nyc report --reporter=text-lcov | coveralls",
         "build": "babel server -d dist",
         "lint": "eslint server"

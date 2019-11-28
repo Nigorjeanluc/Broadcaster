@@ -25,5 +25,6 @@ router.get('/:type', isLogged, isTypeAllowed, EntryController.allEntries);
 router.get('/:type/:id', isLogged, isTypeAllowed, EntryController.singleEntry);
 router.delete('/:type/:id', isLogged, isTypeAllowed, EntryController.deleteEntry);
 router.patch('/:type/:id/location', isLogged, isTypeAllowed, EntryController.editLocation);
+router.patch('/:type/:id/comment', isLogged, isTypeAllowed, EntryController.editComment);
 
 export default router;

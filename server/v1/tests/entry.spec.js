@@ -315,6 +315,61 @@ describe('Endpoint PATCH /api/v1/:type/location', () => {
     });
 });
 
+describe('Endpoint PATCH /api/v1/:type/comment', () => {
+
+    it("should let owner's entry comment edit red-flag", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/comment")
+            .send({ comment: 'Another Comment' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a("object");
+                res.body.should.have.property("data").with.lengthOf(1);
+                done();
+            });
+    });
+
+    it("should not let other users edit red-flag's comment", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/comment")
+            .send({ comment: 'Another Logn and Lat' })
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'No red-flag entry with id: 1 found');
+                done();
+            });
+    });
+
+    it("should not edit red-flag's comment with wrong id", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1hghdfghd/comment")
+            .send({ comment: 'Another Logn and Lat' })
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'Endpoint not found');
+                done();
+            });
+    });
+
+    it("should not let owner's entry comment with status different from draft", done => {
+        Chai.request(app)
+            .patch("/api/v1/interventions/2/comment")
+            .send({ comment: 'Another Comment' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(403);
+                res.body.should.have.property("status");
+                res.body.should.have.property("error", 'You are not allowed to change this comment');
+                done();
+            });
+    });
+});
+
 describe('Endpoint DELETE /api/v1/:type/:id', () => {
 
     it("should delete owner's entry", done => {
