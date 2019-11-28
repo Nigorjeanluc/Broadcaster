@@ -12,7 +12,7 @@ Chai.should();
 Chai.use(chaiHttp);
 
 const validTokens = {
-    savedUser: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvYmVydEBnbWFpbC5jb20iLCJpZCI6MSwiaWF0IjoxNTcyNjg4MzEwfQ.dNSwMfMy52oCz68W-ou3TPi88e6iy5s8kAwkzT4u0Pw',
+    savedUser: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvYmVydEBnbWFpbC5jb20iLCJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNTc0OTYzNTcwfQ.J0jknKd1A8H48SUFUWphDcliBHdaU0sJHsGJSPwuA5E',
     unsavedUser: Auth.generateToken('gakwererepacis@gmail.com', 1200),
     noEntryUser: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvYmVydHJ0QGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE1NzI3NzIwOTB9.oZhkuh1fjUM-pEAKzxGskzbRPWLDES4LVOtXMLh9moI'
 };
@@ -338,7 +338,7 @@ describe('Endpoint PATCH /api/v1/:type/comment', () => {
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");
-                res.body.should.have.property("data").with.lengthOf(1);
+                res.body.should.have.property("data");
                 done();
             });
     });
@@ -391,6 +391,74 @@ describe('Endpoint PATCH /api/v1/:type/comment', () => {
                 res.should.have.status(403);
                 res.body.should.have.property("status");
                 res.body.should.have.property("error", 'You are not allowed to change this comment');
+                done();
+            });
+    });
+});
+
+describe('Endpoint PATCH /api/v1/:type/status', () => {
+
+    it("should let only admin edit entry's status", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/status")
+            .send({ status: 'Resolved' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a("object");
+                res.body.should.have.property("data");
+                done();
+            });
+    });
+
+    it("should not let admin edit status with invalid request", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/status")
+            .send({ location: 'Another Comment' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
+                done();
+            });
+    });
+
+    it("should not let admin edit status with invalid url", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1ghash/status")
+            .send({ status: 'Resolved' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
+                done();
+            });
+    });
+
+    it("should not let simple user edit entry's status", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/status")
+            .send({ status: 'Resolved' })
+            .set("Authorization", `Bearer ${validTokens.noEntryUser}`)
+            .end((err, res) => {
+                res.should.have.status(403);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
+                done();
+            });
+    });
+
+    it("should only let admin edit saved entry's status", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/145478/status")
+            .send({ status: 'Resolved' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
                 done();
             });
     });
