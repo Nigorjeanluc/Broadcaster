@@ -7,7 +7,7 @@ const users = [{
     email: 'robert@gmail.com',
     phoneNumber: '0789660036',
     username: 'KingRob',
-    isAdmin: false,
+    isAdmin: true,
     password: Auth.hashPassword('123456789')
 }, {
     id: 2,

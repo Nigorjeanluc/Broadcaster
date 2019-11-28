@@ -24,5 +24,6 @@ router.post('/:type', isLogged, isTypeAllowed, uploader.fields([{ name: 'images'
 router.get('/:type', isLogged, isTypeAllowed, EntryController.allEntries);
 router.get('/:type/:id', isLogged, isTypeAllowed, EntryController.singleEntry);
 router.delete('/:type/:id', isLogged, isTypeAllowed, EntryController.deleteEntry);
+router.patch('/:type/:id/location', isLogged, isTypeAllowed, EntryController.editLocation);
 
 export default router;
