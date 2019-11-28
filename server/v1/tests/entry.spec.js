@@ -265,9 +265,11 @@ describe('Endpoint DELETE /api/v1/:type/:id', () => {
             .delete("/api/v1/red-flags/1")
             .set("Authorization", `Bearer ${validTokens.savedUser}`)
             .end((err, res) => {
-                res.should.have.status(204);
-                done();
+                res.should.have.status(200);
+                res.body.should.have.property("status");
+                res.body.should.have.property("message", `red-flag record has been deleted`);
             });
+        done();
     });
 
     it("should not delete entry if user isn't owner", done => {

@@ -75,7 +75,7 @@ class EntryController {
 
         if (data) {
             Entry.destroyEntry(data);
-            return res.status(204).json({
+            return res.status(200).json({
                 status: 200,
                 message: `${type} record has been deleted`
             });
