@@ -85,6 +85,40 @@ class EntryController {
             error: `No ${type} entry with id: ${id} found`
         });
     }
+
+    static editLocation(req, res) {
+        const type = req.params.type.split('s')[0];
+        const { id } = req.params;
+        if (isNaN(id)) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Endpoint not found'
+            });
+        }
+
+        const data = Entry.entryOwner(id, type, req.userData.id);
+
+        if (data) {
+            if (data.status === 'draft') {
+                data.location = req.body.location;
+                return res.status(200).json({
+                    status: 200,
+                    data: {
+                        id: data.id,
+                        message: `Updated ${type} record's location`
+                    }
+                });
+            }
+            return res.status(403).json({
+                status: 403,
+                error: `You are not allowed to change this location`
+            });
+        }
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entry with id: ${id} found`
+        });
+    }
 }
 
 export default EntryController;
