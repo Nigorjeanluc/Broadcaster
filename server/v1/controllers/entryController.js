@@ -60,6 +60,31 @@ class EntryController {
             error: `No ${type} entry with id: ${id} found`
         });
     }
+
+    static deleteEntry(req, res) {
+        const type = req.params.type.split('s')[0];
+        const { id } = req.params;
+        if (isNaN(id)) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Endpoint not found'
+            });
+        }
+
+        const data = Entry.entryOwner(id, type, req.userData.id);
+
+        if (data) {
+            Entry.destroyEntry(data);
+            return res.status(200).json({
+                status: 200,
+                message: `${type} record has been deleted`
+            });
+        }
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entry with id: ${id} found`
+        });
+    }
 }
 
 export default EntryController;

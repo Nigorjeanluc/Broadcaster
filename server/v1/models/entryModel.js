@@ -25,6 +25,14 @@ class Entry {
     static entryExists(id, type) {
         return entries.filter(entry => entry.type === type).find(entry => entry.id === parseInt(id, 10));
     }
+
+    static entryOwner(id, type, userId) {
+        return entries.filter(entry => entry.type === type).find(entry => entry.id === parseInt(id, 10) && entry.createdBy === parseInt(userId, 10));
+    }
+
+    static destroyEntry(entry) {
+        return entries.splice(entries.indexOf(entry), 1);
+    }
 }
 
 export default Entry;
