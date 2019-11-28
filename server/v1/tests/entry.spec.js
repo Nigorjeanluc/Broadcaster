@@ -275,6 +275,19 @@ describe('Endpoint PATCH /api/v1/:type/location', () => {
             });
     });
 
+    it("should not let owner's entry edit location red-flag with invalid request", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/location")
+            .send({ comment: 'Another Logn and Lat' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
+                done();
+            });
+    });
+
     it("should not let other users edit red-flag's location", done => {
         Chai.request(app)
             .patch("/api/v1/red-flags/1/location")
@@ -326,6 +339,19 @@ describe('Endpoint PATCH /api/v1/:type/comment', () => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");
                 res.body.should.have.property("data").with.lengthOf(1);
+                done();
+            });
+    });
+
+    it("should not let owner's entry edit comment of red-flag", done => {
+        Chai.request(app)
+            .patch("/api/v1/red-flags/1/comment")
+            .send({ location: 'Another Comment' })
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                res.body.should.have.property("error");
                 done();
             });
     });

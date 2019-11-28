@@ -47,6 +47,49 @@ class EntryValidation {
         });
     }
 
+    static editLocationValidator(req, res, next) {
+        const Schema = Joi.object().keys({
+            location: Joi.string().min(3).max(40).label('Location').trim().required(),
+        });
+
+        const result = Schema.validate(req.body, {
+            abortEarly: false
+        });
+        const valid = result.error == null;
+
+        if (valid) {
+            return next();
+        }
+        const { details } = result.error;
+        const message = details.map(i => i.message.replace(/"/g, '')).join(', ');
+
+        return res.status(400).json({
+            status: 400,
+            error: message,
+        });
+    }
+
+    static editCommentValidator(req, res, next) {
+        const Schema = Joi.object().keys({
+            comment: Joi.string().min(10).max(1000).label('Comment').trim().required(),
+        });
+
+        const result = Schema.validate(req.body, {
+            abortEarly: false
+        });
+        const valid = result.error == null;
+
+        if (valid) {
+            return next();
+        }
+        const { details } = result.error;
+        const message = details.map(i => i.message.replace(/"/g, '')).join(', ');
+
+        return res.status(400).json({
+            status: 400,
+            error: message,
+        });
+    }
 }
 
 export default EntryValidation;
