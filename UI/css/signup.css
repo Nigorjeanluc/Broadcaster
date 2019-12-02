@@ -184,20 +184,13 @@
     display: table;
 }
 
-.content .signup-box .body .cancelbtn {
-    padding: 14px 20px;
-    background-color: #f44336;
-    width: 100%;
-    font-family: 'Berkshire Swash', cursive;
-}
-
 .content .signup-box .body .signupbtn {
     width: 100%;
     font-family: 'Berkshire Swash', cursive;
 }
 
 
-/* 
+/*
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
 */
@@ -206,21 +199,15 @@
     .content .signup-box {
         width: 50%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
 
-/* 
+/*
   ##Device = Laptops, Desktops
   ##Screen = B/w 1025px to 1280px
 */
@@ -229,21 +216,15 @@
     .content .signup-box {
         width: 50%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
 
-/* 
+/*
   ##Device = Tablets, Ipads (portrait)
   ##Screen = B/w 768px to 1024px
 */
@@ -252,21 +233,15 @@
     .content .signup-box {
         width: 50%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
 
-/* 
+/*
   ##Device = Tablets, Ipads (landscape)
   ##Screen = B/w 768px to 1024px
 */
@@ -275,21 +250,15 @@
     .content .signup-box {
         width: 60%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
 
-/* 
+/*
   ##Device = Low Resolution Tablets, Mobiles (Landscape)
   ##Screen = B/w 481px to 767px
 */
@@ -298,21 +267,15 @@
     .content .signup-box {
         width: 70%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
 
-/* 
+/*
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
@@ -321,16 +284,10 @@
     .content .signup-box {
         width: 100%;
     }
-    /* Float cancel and signup buttons and add an equal width */
-    .content .signup-box .body .cancelbtn {
-        float: left;
-        width: 50%;
-        border-radius: 5px 0px 0px 5px;
-    }
     .content .signup-box .body .signupbtn {
         float: left;
-        width: 50%;
-        border-radius: 0px 5px 5px 0px;
+        width: 100%;
+        border-radius: 5px 5px 5px 5px;
     }
 }
 
