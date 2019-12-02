@@ -447,6 +447,7 @@
     padding: 10px;
     margin: 5px 0 22px 0;
     display: inline-block;
+    height: 50px;
     font-size: .9em;
     border: 3px solid #455931;
     border-radius: 5px;
@@ -488,7 +489,7 @@
 
 .content .entry-box .body a {
     display: block;
-    background: #455931;
+    background: #45593150;
     color: #f1f1f1;
     text-align: center;
     padding: 10px;
