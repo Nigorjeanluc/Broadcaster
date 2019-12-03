@@ -2,12 +2,15 @@ language: node_js
 node_js:
   - stable
 
+services:
+  - postgresql
 
 cache:
   directories:
     - "node_modules"
 
 before_install:
+  - psql -c 'CREATE DATABASE broadcasterdb_test;' -U postgres
   - npm i
 script:
   - npm test
