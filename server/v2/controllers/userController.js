@@ -26,19 +26,21 @@ class UserController {
             const add = await User.createUser(user);
 
             if (add.rowCount === 1) {
+                const { id, firstname, lastname, email, username, is_admin } = add.rows[0];
+                console.log(firstname);
                 return res.status(201).json({
                     status: 201,
                     message: 'User created successfully',
                     data: {
                         token: Auth.generateToken(
-                            add.rows[0].email,
-                            add.rows[0].id,
-                            add.rows[0].isAdmin
+                            email,
+                            id,
+                            is_admin
                         ),
-                        firstname: add.rows[0].firstname,
-                        lastname: add.rows[0].lastname,
-                        email: add.rows[0].email,
-                        username: add.rows[0].username
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                        username: username
                     }
                 });
             }
@@ -61,18 +63,20 @@ class UserController {
             }
             const pswMatch = Auth.checkPassword(req.body.password, doesExist.rows[0].password);
             if (pswMatch) {
+                const { id, firstname, lastname, email, username, is_admin } = doesExist.rows[0];
+
                 return res.status(200).json({
                     status: 200,
                     message: 'User is successfully logged in',
                     data: {
                         token: Auth.generateToken(
-                            doesExist.rows[0].email,
-                            doesExist.rows[0].id,
-                            doesExist.rows[0].isAdmin),
-                        firstname: doesExist.rows[0].firstname,
-                        lastname: doesExist.rows[0].lastname,
-                        email: doesExist.rows[0].email,
-                        username: doesExist.rows[0].username,
+                            email,
+                            id,
+                            is_admin),
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                        username: username,
                     }
                 });
             }
