@@ -49,6 +49,46 @@ class UserController {
             });
         }
     }
+
+    static async signIn(req, res) {
+        try {
+            const doesExist = await User.emailExists(req.body.email);
+            if (doesExist.rowCount === 0) {
+                return res.status(401).json({
+                    status: 401,
+                    error: 'Sign up first please',
+                });
+            }
+            const pswMatch = Auth.checkPassword(req.body.password, doesExist.rows[0].password);
+            if (pswMatch) {
+                return res.status(200).json({
+                    status: 200,
+                    message: 'User is successfully logged in',
+                    data: {
+                        token: Auth.generateToken(
+                            doesExist.rows[0].email,
+                            doesExist.rows[0].id,
+                            doesExist.rows[0].isAdmin),
+                        firstname: doesExist.rows[0].firstname,
+                        lastname: doesExist.rows[0].lastname,
+                        email: doesExist.rows[0].email,
+                        username: doesExist.rows[0].username,
+                    }
+                });
+            }
+
+            return res.status(401).json({
+                status: 401,
+                error: 'Wrong password',
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                error: error.message
+            });
+        }
+    }
 };
 
 export default UserController;
