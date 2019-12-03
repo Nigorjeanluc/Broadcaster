@@ -23,7 +23,7 @@ class User {
     }
 
     static createUser(user) {
-        return pool.query(queries.addUser, [
+        const addedUser = pool.query(queries.addUser, [
             user.firstname,
             user.lastname,
             user.email,
@@ -33,6 +33,7 @@ class User {
             user.password,
             user.createdOn
         ]);
+        return addedUser.rows[0];
     }
 }
 

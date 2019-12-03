@@ -13,6 +13,7 @@ const mochaAsync = (fn) => {
         }
     };
 };
+
 const { expect } = Chai;
 Chai.use(chaiHttp);
 
