@@ -1,12 +1,10 @@
-import pool from '../config/dbConnect';
 import User from '../models/userModel';
-import queries from '../models/queries';
 import Auth from '../helpers/authenticate';
 
 class UserController {
     static async signUp(req, res) {
         try {
-            const existingEmail = await pool.query(queries.findOneUser, [req.body.email]);
+            const existingEmail = await User.emailExists(req.body.email);
             if (existingEmail.rowCount === 1) {
                 return res.status(409).json({
                     status: 409,
@@ -14,7 +12,7 @@ class UserController {
                 });
             }
 
-            const existingUsername = await pool.query(queries.findOneUsername, [req.body.username]);
+            const existingUsername = await User.usernameExists(req.body.username);
             if (existingUsername.rowCount === 1) {
                 return res.status(409).json({
                     status: 409,
@@ -25,16 +23,7 @@ class UserController {
             const user = new User(req.body);
 
 
-            const add = await pool.query(queries.addUser, [
-                user.firstname,
-                user.lastname,
-                user.email,
-                user.phoneNumber,
-                user.username,
-                user.isAdmin,
-                user.password,
-                user.createdOn
-            ]);
+            const add = await User.createUser(user);
 
             if (add.rowCount === 1) {
                 return res.status(201).json({
