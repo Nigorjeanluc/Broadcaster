@@ -13,6 +13,9 @@
         "createtables": "node --require @babel/polyfill --require @babel/register server/v2/models/addTables",
         "droptables": "node --require @babel/polyfill --require @babel/register server/v2/models/deleteTables"
     },
+    "nyc": {
+        "exclude": "server/v2/tests/*.spec.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Nigorjeanluc/Broadcaster.git"

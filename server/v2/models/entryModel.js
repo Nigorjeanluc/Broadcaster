@@ -30,6 +30,10 @@ class Entry {
         ]);
         return addedEntry.rows[0];
     }
+
+    static sameType(userId, type) {
+        return pool.query(queries.findSameType, [userId, type]);
+    }
 }
 
 export default Entry;

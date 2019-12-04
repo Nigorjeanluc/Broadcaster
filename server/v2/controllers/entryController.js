@@ -18,6 +18,24 @@ class EntryController {
             }]
         });
     }
+
+    static async allEntries(req, res) {
+        const { id } = req.userData;
+        const type = req.params.type.split('s')[0];
+
+        const data = await Entry.sameType(id, type);
+
+        if (data.rowCount > 0) {
+            return res.status(200).json({
+                status: 200,
+                data: data.rows
+            });
+        }
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entries found`
+        });
+    }
 }
 
 export default EntryController;
