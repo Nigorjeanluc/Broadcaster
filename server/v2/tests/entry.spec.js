@@ -139,3 +139,66 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body.error).to.be.a('string');
         }));
 });
+
+describe('Endpoint GET /api/v2/:type/:id', () => {
+    it("should retrieve entry with approrpiate type: red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/red-flags/1`);
+            expect(res.status).to.equals(200);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+    it("should retrieve entry with approrpiate type: intervention",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/interventions/2`);
+            expect(res.status).to.equals(200);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+    it("should not retrieve entry with inapprorpiate type: red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/red-flags/2`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+    it("should not retrieve entry with inapprorpiate type: intervention",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/interventions/1`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+    it("should not retrieve unsaved red-flag entries",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/red-flags/1000`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+    it("should not retrieve unsaved intervention entries",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/interventions/1000`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+    it("should not retrieve entry with inapprorpiate id",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/interventions/1fgsgsdgsdfgfdsgf`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+    it("should not retrieve entry with invalid type",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v2/interves/1`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});

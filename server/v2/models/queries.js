@@ -51,6 +51,8 @@ const findOneUsername = `select * from users where username= $1`;
 
 const findSameType = `select * from entries where createdBy = $1 and type= $2 order by updatedOn desc`;
 
+const findOneEntry = `select * from entries where id= $1 and type= $2`;
+
 export default {
     createUserTable,
     createEntryTable,
@@ -58,6 +60,7 @@ export default {
     findOneUser,
     findOneUsername,
     findSameType,
+    findOneEntry,
     addUser,
     addEntry
 };
