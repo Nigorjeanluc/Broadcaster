@@ -6,8 +6,6 @@ import path from 'path';
 import app from "../../app";
 import entryData from './mockData/entryData';
 import authData from './mockData/authData';
-import User from '../models/userModel';
-import Auth from '../helpers/authenticate';
 
 
 const mochaAsync = (fn) => {
@@ -28,9 +26,10 @@ Chai.use(chaiHttp);
 describe('Endpoint POST /api/v2/:type', () => {
     // Retrieves saved User test hook
     before(mochaAsync(async() => {
-        const userExists = await User.emailExists(authData[0].email);
-        const { email, id, isadmin } = userExists.rows[0];
-        validTokens.savedUser = Auth.generateToken(email, id, isadmin);
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[0].email, password: authData[0].password });
+        validTokens.savedUser = res.body.data.token;
     }));
 
     it("should create a new red-flag when user has an account",
