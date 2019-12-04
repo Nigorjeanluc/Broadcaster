@@ -40,6 +40,15 @@ class Entry {
             id, type
         ]);
     }
+
+    static updateLocation(id, location, type, userId) {
+        return pool.query(queries.updateLocation, [
+            parseInt(id, 10),
+            location, type,
+            parseInt(userId, 10),
+            new Date()
+        ]);
+    }
 }
 
 export default Entry;

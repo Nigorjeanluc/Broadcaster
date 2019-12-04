@@ -202,3 +202,61 @@ describe('Endpoint GET /api/v2/:type/:id', () => {
             expect(res.body.error).to.be.a('string');
         }));
 });
+
+describe('Endpoint PATCH /api/v2/:type/location', () => {
+
+    it("should let owner's entry location edit red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signup")
+            .send(authData[1]);
+        validTokens.noEntryUser = res.body.data.token;
+    }));
+
+    it("should not let other users edit red-flag's location",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not edit red-flag's location with wrong id",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1hghdfghd/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should let owner's entry location edit intervention",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/interventions/2/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+});
