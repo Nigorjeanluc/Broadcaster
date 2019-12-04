@@ -91,3 +91,51 @@ describe('Endpoint POST /api/v2/:type', () => {
             expect(res.body.error).to.be.a('string');
         }));
 });
+
+describe('Endpoint GET /api/v2/:type', () => {
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[0].email, password: authData[0].password });
+        validTokens.savedUser = res.body.data.token;
+    }));
+    it("should retrieve all red-flags posted by a user",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(200);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+        }));
+
+    it("should retrieve all interventions posted by a user",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v1/interventions`)
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(200);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('array');
+        }));
+
+    it("should return 404 error if a user did not report a red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should return 404 error if a user did not report an intervetnion",
+        mochaAsync(async() => {
+            const res = await Chai.request(app).get(`/api/v1/interventions`)
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});

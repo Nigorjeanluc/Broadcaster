@@ -22,5 +22,6 @@ const uploader = multer({
 });
 
 router.post('/:type', isLogged, isTypeAllowed, uploader.fields([{ name: 'images', maxCount: 2 }, { name: 'videos', maxCount: 2 }]), EntryValidator.CreateValidator, asyncErrorHandler(EntryController.createEntry));
+router.get('/:type', isLogged, isTypeAllowed, asyncErrorHandler(EntryController.allEntries));
 
 export default router;

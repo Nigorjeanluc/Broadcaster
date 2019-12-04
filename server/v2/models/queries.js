@@ -49,12 +49,15 @@ const findOneUser = `select * from users where email= $1`;
 
 const findOneUsername = `select * from users where username= $1`;
 
+const findSameType = `select * from entries where createdBy = $1 and type= $2 order by updatedOn desc`;
+
 export default {
     createUserTable,
     createEntryTable,
     deleteAllTables,
     findOneUser,
     findOneUsername,
+    findSameType,
     addUser,
     addEntry
 };
