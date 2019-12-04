@@ -39,6 +39,12 @@ const addUser = `
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *`;
 
+const addEntry = `
+    INSERT INTO
+        entries (title, type, location, status, images, videos, comment, createdBy, createdOn, updatedOn)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    RETURNING *`;
+
 const findOneUser = `select * from users where email= $1`;
 
 const findOneUsername = `select * from users where username= $1`;
@@ -49,5 +55,6 @@ export default {
     deleteAllTables,
     findOneUser,
     findOneUsername,
-    addUser
+    addUser,
+    addEntry
 };

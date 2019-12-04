@@ -22,8 +22,8 @@ class User {
         return pool.query(queries.findOneUsername, [username]);
     }
 
-    static createUser(user) {
-        const addedUser = pool.query(queries.addUser, [
+    static async createUser(user) {
+        const addedUser = await pool.query(queries.addUser, [
             user.firstname,
             user.lastname,
             user.email,
