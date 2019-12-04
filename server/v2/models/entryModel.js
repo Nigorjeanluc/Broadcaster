@@ -34,6 +34,12 @@ class Entry {
     static sameType(userId, type) {
         return pool.query(queries.findSameType, [userId, type]);
     }
+
+    static findOneEntry(id, type) {
+        return pool.query(queries.findOneEntry, [
+            id, type
+        ]);
+    }
 }
 
 export default Entry;

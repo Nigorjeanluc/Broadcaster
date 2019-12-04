@@ -36,6 +36,30 @@ class EntryController {
             error: `No ${type} entries found`
         });
     }
+
+    static async singleEntry(req, res) {
+        const type = req.params.type.split('s')[0];
+        const { id } = req.params;
+        if (isNaN(id)) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Endpoint not found'
+            });
+        }
+
+        const data = await Entry.findOneEntry(id, type);
+
+        if (data.rowCount === 1) {
+            return res.status(200).json({
+                status: 200,
+                data: data.rows[0]
+            });
+        }
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entry with id: ${id} found`
+        });
+    }
 }
 
 export default EntryController;
