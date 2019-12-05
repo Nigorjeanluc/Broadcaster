@@ -57,6 +57,10 @@ const updateLocation = `UPDATE entries
                         SET location = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
                         RETURNING * `;
 
+const updateComment = `UPDATE entries
+                        SET comment = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
+                        RETURNING * `;
+
 export default {
     createUserTable,
     createEntryTable,
@@ -67,5 +71,6 @@ export default {
     findOneEntry,
     addUser,
     addEntry,
-    updateLocation
+    updateLocation,
+    updateComment
 };
