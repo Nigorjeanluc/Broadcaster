@@ -259,4 +259,15 @@ describe('Endpoint PATCH /api/v2/:type/location', () => {
             expect(res.body).to.have.property('data');
             expect(res.body.data).to.be.an('object');
         }));
+
+    it("should not let owner's entry edit location of red-flag with invalid request",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ comment: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
 });
