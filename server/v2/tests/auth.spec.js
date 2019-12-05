@@ -9,7 +9,7 @@ const mochaAsync = (fn) => {
         try {
             await fn();
         } catch (err) {
-            console.log(err.message);
+            console.error(err);
         }
     };
 };

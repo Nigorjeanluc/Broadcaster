@@ -168,9 +168,8 @@ describe('Endpoint GET /api/v2/:type', () => {
 
     before(mochaAsync(async() => {
         const res = await Chai.request(app)
-            .post("/api/v2/auth/signup")
-            .send(authData[3]);
-        console.log(res);
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[3].email, password: authData[3].password });
         validTokens.noEntryUser = res.body.data.token;
     }));
     it("should return 404 error if a user did not report a red-flag",
