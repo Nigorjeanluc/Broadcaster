@@ -145,6 +145,44 @@ class EntryController {
             error: `No ${type} entry with id: ${id} found`
         });
     }
+
+    static editStatus(req, res) {
+        const type = req.params.type.split('s')[0];
+        const { id } = req.params;
+        const { isAdmin } = req.userData;
+
+        if (isNaN(id)) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Endpoint not found'
+            });
+        }
+
+        const data = Entry.findOneEntry(id, type);
+
+        if (data.rowCount === 1) {
+            if (isAdmin) {
+                data.status = req.body.status;
+                return res.status(200).json({
+                    status: 200,
+                    data: {
+                        id: data.id,
+                        message: `Updated ${type} record's status`
+                    }
+                });
+            }
+
+            return res.status(403).json({
+                status: 403,
+                error: `You are not allowed to change this status`
+            });
+        }
+
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entry with id: ${id} found`
+        });
+    }
 }
 
 export default EntryController;

@@ -3,6 +3,7 @@ export default [{
     lastname: 'Ndiramiye',
     email: 'nigorjeanluc@gmail.com',
     phoneNumber: '0789660036',
+    isAdmin: true,
     username: 'KingJay',
     password: '1234567890'
 }, {

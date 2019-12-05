@@ -59,6 +59,14 @@ class Entry {
         ]);
     }
 
+    static updateStatus(id, status, type) {
+        return pool.query(queries.updateStatus, [
+            parseInt(id, 10),
+            status, type,
+            new Date()
+        ]);
+    }
+
     static deleteEntry(id, type, userId) {
         return pool.query(queries.deleteEntry, [
             parseInt(id, 10),

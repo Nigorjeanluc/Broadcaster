@@ -383,6 +383,67 @@ describe('Endpoint PATCH /api/v2/:type/comment', () => {
         }));
 });
 
+
+describe('Endpoint PATCH /api/v2/:type/status', () => {
+
+    it("should let only admin edit entry's status",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/status")
+                .send({ status: 'Resolved' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(200);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+
+    it("should not let admin edit status with invalid request",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/status")
+                .send({ location: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not let admin edit status with invalid url",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1ghash/status")
+                .send({ status: 'Resolved' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not let simple user edit entry's status",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/status")
+                .send({ status: 'Resolved' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.status).to.equals(403);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should only let admin edit saved entry's status",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/145478/status")
+                .send({ status: 'Resolved' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});
+
 describe('Endpoint DELETE /api/v2/:type/:id', () => {
 
     it("should delete owner's entry",

@@ -61,6 +61,10 @@ const updateComment = `UPDATE entries
                         SET comment = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
                         RETURNING * `;
 
+const updateStatus = `UPDATE entries
+                        SET status = $2, updatedOn = $4 WHERE id = $1 and type = $3
+                        RETURNING * `;
+
 const deleteEntry = `DELETE FROM entries WHERE id = $1 and type = $2 and createdBy = $3`;
 
 export default {
@@ -75,5 +79,6 @@ export default {
     addEntry,
     updateLocation,
     updateComment,
+    updateStatus,
     deleteEntry
 };
