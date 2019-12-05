@@ -392,6 +392,7 @@ describe('Endpoint PATCH /api/v2/:type/status', () => {
                 .patch("/api/v2/red-flags/1/status")
                 .send({ status: 'Resolved' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
+                console.log(res.status.error);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
