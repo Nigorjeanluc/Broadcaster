@@ -90,6 +90,49 @@ describe('Endpoint POST /api/v2/:type', () => {
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
         }));
+
+    it("should create a new red-flag when user has an account",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('title', entriesTester[2].title)
+                .field('location', entriesTester[2].location)
+                .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+                .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+                .field('comment', entriesTester[2].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a('string');
+        })
+    );
+    it("should not create an entry with no image or video",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('title', entriesTester[0].title)
+                .field('location', entriesTester[0].location)
+                .field('comment', entriesTester[0].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a("string");
+        })
+    );
+    it("should not create an entry with no image or video",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('location', entriesTester[0].location)
+                .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+                .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+                .field('comment', entriesTester[0].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a("string");
+        })
+    );
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
