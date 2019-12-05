@@ -152,7 +152,6 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
             expect(res.body.data).to.be.an('array');
-            console.log(res.body.error);
         }));
 
     it("should retrieve all interventions posted by a user",
