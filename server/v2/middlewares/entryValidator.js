@@ -90,6 +90,28 @@ class EntryValidation {
             error: message,
         });
     }
+
+    static editStatusValidator(req, res, next) {
+        const Schema = Joi.object().keys({
+            status: Joi.string().min(3).max(20).label('Status').trim().required(),
+        });
+
+        const result = Schema.validate(req.body, {
+            abortEarly: false
+        });
+        const valid = result.error == null;
+
+        if (valid) {
+            return next();
+        }
+        const { details } = result.error;
+        const message = details.map(i => i.message.replace(/"/g, '')).join(', ');
+
+        return res.status(400).json({
+            status: 400,
+            error: message,
+        });
+    }
 }
 
 export default EntryValidation;
