@@ -1,5 +1,4 @@
 const createUserTable = `
-import deleteTables from './deleteTables';
     CREATE TABLE IF NOT EXISTS
         users (
             id  SERIAL PRIMARY KEY,
