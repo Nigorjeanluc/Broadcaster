@@ -159,8 +159,6 @@ describe('Endpoint GET /api/v2/:type', () => {
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v2/interventions`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            console.log(res.body.error);
-            console.log(validTokens.savedUser);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
@@ -168,6 +166,12 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body.data).to.be.an('array');
         }));
 
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signup")
+            .send(authData[3]);
+        validTokens.noEntryUser = res.body.data.token;
+    }));
     it("should return 404 error if a user did not report a red-flag",
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v2/red-flags`)
