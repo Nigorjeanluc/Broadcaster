@@ -19,7 +19,7 @@ const mochaAsync = (fn) => {
 };
 
 const { expect } = Chai;
-const { validTokens, invalidToken, entriesTester } = entryData;
+const { validTokens, invalidToken, entriesTester, adminEntryId } = entryData;
 
 Chai.use(chaiHttp);
 
@@ -386,10 +386,22 @@ describe('Endpoint PATCH /api/v2/:type/comment', () => {
 
 describe('Endpoint PATCH /api/v2/:type/status', () => {
 
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post(`/api/v2/red-flags`)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .set("Authorization", `Bearer ${validTokens.savedUser}`)
+            .field('title', entriesTester[0].title)
+            .field('location', entriesTester[0].location)
+            .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+            .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+            .field('comment', entriesTester[0].comment);
+        adminEntryId = res.body.data.id;
+    }));
     it("should let only admin edit entry's status",
         mochaAsync(async() => {
             const res = await Chai.request(app)
-                .patch("/api/v2/red-flags/1/status")
+                .patch(`/api/v2/red-flags/${adminEntryId}/status`)
                 .send({ status: 'Resolved' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             console.log(res.body.error);
@@ -425,7 +437,7 @@ describe('Endpoint PATCH /api/v2/:type/status', () => {
     it("should not let simple user edit entry's status",
         mochaAsync(async() => {
             const res = await Chai.request(app)
-                .patch("/api/v2/red-flags/1/status")
+                .patch(`/api/v2/red-flags/${adminEntryId}/status`)
                 .send({ status: 'Resolved' })
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.status).to.equals(403);

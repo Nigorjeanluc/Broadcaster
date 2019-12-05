@@ -29,8 +29,12 @@ const entriesTester = [{
     comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
 }];
 
+// eslint-disable-next-line prefer-const
+let adminEntryId = null;
+
 export default {
     validTokens,
     invalidToken,
-    entriesTester
+    entriesTester,
+    adminEntryId
 }
