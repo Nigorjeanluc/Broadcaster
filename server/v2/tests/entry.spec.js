@@ -136,7 +136,8 @@ describe('Endpoint POST /api/v2/:type', () => {
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
-    beforeEach(mochaAsync(async() => {
+    // Retrieves saved User test hook
+    before(mochaAsync(async() => {
         const res = await Chai.request(app)
             .post("/api/v2/auth/signin")
             .send({ email: authData[0].email, password: authData[0].password });
@@ -144,7 +145,7 @@ describe('Endpoint GET /api/v2/:type', () => {
     }));
     it("should retrieve all red-flags posted by a user",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+            const res = await Chai.request(app).get(`/api/v2/red-flags`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
@@ -156,7 +157,7 @@ describe('Endpoint GET /api/v2/:type', () => {
 
     it("should retrieve all interventions posted by a user",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/interventions`)
+            const res = await Chai.request(app).get(`/api/v2/interventions`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             console.log(res.body.error);
             console.log(validTokens.savedUser);
@@ -169,7 +170,7 @@ describe('Endpoint GET /api/v2/:type', () => {
 
     it("should return 404 error if a user did not report a red-flag",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+            const res = await Chai.request(app).get(`/api/v2/red-flags`)
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.body.status).to.equal(404);
             expect(res.body).to.be.an('object');
@@ -178,7 +179,7 @@ describe('Endpoint GET /api/v2/:type', () => {
 
     it("should return 404 error if a user did not report an intervetnion",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/interventions`)
+            const res = await Chai.request(app).get(`/api/v2/interventions`)
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.body.status).to.equal(404);
             expect(res.body).to.be.an('object');
