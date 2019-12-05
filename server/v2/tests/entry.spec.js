@@ -136,6 +136,12 @@ describe('Endpoint POST /api/v2/:type', () => {
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
+    beforeEach(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[0].email, password: authData[0].password });
+        validTokens.savedUser = res.body.data.token;
+    }));
     it("should retrieve all red-flags posted by a user",
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v1/red-flags`)
