@@ -90,6 +90,49 @@ describe('Endpoint POST /api/v2/:type', () => {
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
         }));
+
+    it("should create a new red-flag when user has an account",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('title', entriesTester[2].title)
+                .field('location', entriesTester[2].location)
+                .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+                .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+                .field('comment', entriesTester[2].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a('string');
+        })
+    );
+    it("should not create an entry with no image or video",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('title', entriesTester[0].title)
+                .field('location', entriesTester[0].location)
+                .field('comment', entriesTester[0].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a("string");
+        })
+    );
+    it("should not create an entry with no image or video",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post(`/api/v2/red-flags`)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .set("Authorization", `Bearer ${validTokens.savedUser}`)
+                .field('location', entriesTester[0].location)
+                .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
+                .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
+                .field('comment', entriesTester[0].comment);
+            expect(res.body.status).to.equal(400);
+            expect(res.body.error).to.be.a("string");
+        })
+    );
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
@@ -198,6 +241,75 @@ describe('Endpoint GET /api/v2/:type/:id', () => {
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v2/interves/1`);
             expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});
+
+describe('Endpoint PATCH /api/v2/:type/location', () => {
+
+    it("should let owner's entry location edit red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signup")
+            .send(authData[1]);
+        validTokens.noEntryUser = res.body.data.token;
+    }));
+
+    it("should not let other users edit red-flag's location",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not edit red-flag's location with wrong id",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1hghdfghd/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should let owner's entry location edit intervention",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/interventions/2/location")
+                .send({ location: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+
+    it("should not let owner's entry edit location of red-flag with invalid request",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/location")
+                .send({ comment: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(400);
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
         }));

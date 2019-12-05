@@ -60,6 +60,37 @@ class EntryController {
             error: `No ${type} entry with id: ${id} found`
         });
     }
+
+    static async editLocation(req, res) {
+        const type = req.params.type.split('s')[0];
+        const { id } = req.params;
+        if (isNaN(id)) {
+            return res.status(404).json({
+                status: 404,
+                error: 'Endpoint not found'
+            });
+        }
+
+        const data = await Entry.updateLocation(id, req.body.location, type, req.userData.id);
+
+        if (data.rowCount === 1) {
+            return res.status(201).json({
+                status: 201,
+                data: {
+                    id: data.rows[0].id,
+                    title: data.rows[0].title,
+                    createdOn: data.rows[0].createdon,
+                    updatedOn: data.rows[0].updatedon,
+                    location: data.rows[0].location,
+                    message: `Updated ${type} record's location`
+                }
+            });
+        }
+        return res.status(404).json({
+            status: 404,
+            error: `No ${type} entry with id: ${id} found`
+        });
+    }
 }
 
 export default EntryController;

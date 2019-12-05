@@ -53,6 +53,10 @@ const findSameType = `select * from entries where createdBy = $1 and type= $2 or
 
 const findOneEntry = `select * from entries where id= $1 and type= $2`;
 
+const updateLocation = `UPDATE entries
+                        SET location = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
+                        RETURNING * `;
+
 export default {
     createUserTable,
     createEntryTable,
@@ -62,5 +66,6 @@ export default {
     findSameType,
     findOneEntry,
     addUser,
-    addEntry
+    addEntry,
+    updateLocation
 };
