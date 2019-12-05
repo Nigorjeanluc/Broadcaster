@@ -29,6 +29,16 @@ describe('Endpoint /api/v2/auth/signup', () => {
             expect(res.body.message).to.be.a('string');
         }));
 
+    it("should create a new user account with no entry",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post("/api/v2/auth/signup")
+                .send(usersTester[3]);
+            expect(res.body.status).to.equal(201);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message).to.be.a('string');
+        }));
+
     it("should not create a new user if email exist",
         mochaAsync(async() => {
             const res = await Chai.request(app)

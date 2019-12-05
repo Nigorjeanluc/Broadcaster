@@ -170,6 +170,7 @@ describe('Endpoint GET /api/v2/:type', () => {
         const res = await Chai.request(app)
             .post("/api/v2/auth/signup")
             .send(authData[3]);
+        console.log(res);
         validTokens.noEntryUser = res.body.data.token;
     }));
     it("should return 404 error if a user did not report a red-flag",
