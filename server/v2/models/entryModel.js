@@ -58,6 +58,14 @@ class Entry {
             new Date()
         ]);
     }
+
+    static deleteEntry(id, type, userId) {
+        return pool.query(queries.deleteEntry, [
+            parseInt(id, 10),
+            type,
+            parseInt(userId, 10)
+        ]);
+    }
 }
 
 export default Entry;

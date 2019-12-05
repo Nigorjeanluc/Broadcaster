@@ -152,7 +152,6 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
             expect(res.body.data).to.be.an('array');
-            console.log(res.body.error);
         }));
 
     it("should retrieve all interventions posted by a user",
@@ -379,6 +378,57 @@ describe('Endpoint PATCH /api/v2/:type/comment', () => {
                 .send({ location: 'Another Comment' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             expect(res.status).to.equals(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});
+
+describe('Endpoint DELETE /api/v2/:type/:id', () => {
+
+    it("should delete owner's entry",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .delete("/api/v2/red-flags/1")
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+
+            expect(res.status).to.equals(204);
+        }));
+
+    it("should not delete entry if user isn't owner",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .delete("/api/v2/red-flags/1")
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.status).to.equals(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not delete with invalid id",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .delete("/api/v2/red-flags/1000sdsddsa")
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not delete entry without a token",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .delete("/api/v2/interventions/2");
+            expect(res.status).to.equals(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not delete entry with an invalid token",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .delete("/api/v2/interventions/2")
+                .set("Authorization", `Bearer ${invalidToken}`);
+            expect(res.status).to.equals(401);
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
         }));
