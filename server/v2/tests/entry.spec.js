@@ -136,12 +136,6 @@ describe('Endpoint POST /api/v2/:type', () => {
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
-    before(mochaAsync(async() => {
-        const res = await Chai.request(app)
-            .post("/api/v2/auth/signin")
-            .send({ email: authData[0].email, password: authData[0].password });
-        validTokens.savedUser = res.body.data.token;
-    }));
     it("should retrieve all red-flags posted by a user",
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v1/red-flags`)
@@ -151,12 +145,15 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
             expect(res.body.data).to.be.an('array');
+            console.log(res.body.error);
         }));
 
     it("should retrieve all interventions posted by a user",
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v1/interventions`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            console.log(res.body.error);
+            console.log(validTokens.savedUser);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
