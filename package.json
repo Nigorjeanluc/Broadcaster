@@ -4,7 +4,7 @@
     "description": "Broadcaster App is used to report corruption cases and the need of authorities intervetion in African countries",
     "main": "app.js",
     "scripts": {
-        "start": "npm run build &&  npm run createtables && node --require @babel/polyfill dist/app.js",
+        "start": "npm run build && npm run createtables && node --require @babel/polyfill dist/app.js",
         "test": "npm run droptables && npm run createtables && cross-env NODE_ENV=isTesting nyc --reporter=text --reporter=lcov mocha --require @babel/register --require @babel/polyfill ./server/v2/tests/*.spec.js ./server/v1/tests/*.spec.js --exit",
         "dev": "nodemon --exec babel-node ./server/app.js",
         "coveralls": "npm test && nyc report --reporter=text-lcov | coveralls",

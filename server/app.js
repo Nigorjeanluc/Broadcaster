@@ -25,7 +25,10 @@ app.get('/', (req, res) => {
 
 app.use((req, res) => {
     res.status(404);
-    res.json({ error: 'Endpoint not found' });
+    res.json({
+        status: 404,
+        error: 'Endpoint not found'
+    });
 });
 
 app.listen(port, () => {

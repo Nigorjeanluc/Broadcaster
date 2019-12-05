@@ -1,4 +1,5 @@
 const createUserTable = `
+import deleteTables from './deleteTables';
     CREATE TABLE IF NOT EXISTS
         users (
             id  SERIAL PRIMARY KEY,
@@ -61,6 +62,8 @@ const updateComment = `UPDATE entries
                         SET comment = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
                         RETURNING * `;
 
+const deleteEntry = `DELETE FROM entries WHERE id = $1 and type = $2 and createdBy = $3`;
+
 export default {
     createUserTable,
     createEntryTable,
@@ -72,5 +75,6 @@ export default {
     addUser,
     addEntry,
     updateLocation,
-    updateComment
+    updateComment,
+    deleteEntry
 };
