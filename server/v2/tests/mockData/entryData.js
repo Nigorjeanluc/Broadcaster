@@ -21,6 +21,12 @@ const entriesTester = [{
     images: ['uploads/home3.jpg', 'uploads/home3.jpg'],
     videos: ['uploads/home3.jpg', 'uploads/home3.jpg'],
     comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
+}, {
+    title: "",
+    location: "Lat", // Lat Long coordinates
+    images: ['uploads/home3.jpg', 'uploads/home3.jpg'],
+    videos: ['uploads/home3.jpg', 'uploads/home3.jpg'],
+    comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
 }];
 
 export default {

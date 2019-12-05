@@ -49,6 +49,15 @@ class Entry {
             new Date()
         ]);
     }
+
+    static updateComment(id, comment, type, userId) {
+        return pool.query(queries.updateComment, [
+            parseInt(id, 10),
+            comment, type,
+            parseInt(userId, 10),
+            new Date()
+        ]);
+    }
 }
 
 export default Entry;

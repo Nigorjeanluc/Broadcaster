@@ -13,7 +13,7 @@ const mochaAsync = (fn) => {
         try {
             await fn();
         } catch (err) {
-            console.log(err.message);
+            console.error(err);
         }
     };
 };
@@ -71,11 +71,11 @@ describe('Endpoint POST /api/v2/:type', () => {
 
     it("should not create a new red-flag when user has no account",
         mochaAsync(async() => {
-            const res = Chai.request(app).post(`/api/v2/red-flags`)
+            const res = await Chai.request(app).post(`/api/v2/red-flags`)
                 .set("Authorization", `Bearer ${validTokens.unsavedUser}`)
                 .set("Content-Type", 'application/x-www-form-urlencoded')
                 .send(entriesTester[0]);
-            expect(res.body.status).to.equal(401);
+            expect(res.status).to.equal(401);
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
 
@@ -86,7 +86,7 @@ describe('Endpoint POST /api/v2/:type', () => {
                 .set("Authorization", `Bearer ${validTokens.unsavedUser}`)
                 .set("Content-Type", 'application/x-www-form-urlencoded')
                 .send(entriesTester[1]);
-            expect(res.body.status).to.equal(401);
+            expect(res.status).to.equal(401);
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
         }));
@@ -102,7 +102,7 @@ describe('Endpoint POST /api/v2/:type', () => {
                 .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
                 .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
                 .field('comment', entriesTester[2].comment);
-            expect(res.body.status).to.equal(400);
+            expect(res.status).to.equal(400);
             expect(res.body.error).to.be.a('string');
         })
     );
@@ -115,7 +115,7 @@ describe('Endpoint POST /api/v2/:type', () => {
                 .field('title', entriesTester[0].title)
                 .field('location', entriesTester[0].location)
                 .field('comment', entriesTester[0].comment);
-            expect(res.body.status).to.equal(400);
+            expect(res.status).to.equal(400);
             expect(res.body.error).to.be.a("string");
         })
     );
@@ -129,13 +129,14 @@ describe('Endpoint POST /api/v2/:type', () => {
                 .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
                 .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
                 .field('comment', entriesTester[0].comment);
-            expect(res.body.status).to.equal(400);
+            expect(res.status).to.equal(400);
             expect(res.body.error).to.be.a("string");
         })
     );
 });
 
 describe('Endpoint GET /api/v2/:type', () => {
+    // Retrieves saved User test hook
     before(mochaAsync(async() => {
         const res = await Chai.request(app)
             .post("/api/v2/auth/signin")
@@ -144,18 +145,19 @@ describe('Endpoint GET /api/v2/:type', () => {
     }));
     it("should retrieve all red-flags posted by a user",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+            const res = await Chai.request(app).get(`/api/v2/red-flags`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
             expect(res.body.data).to.be.an('array');
+            console.log(res.body.error);
         }));
 
     it("should retrieve all interventions posted by a user",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/interventions`)
+            const res = await Chai.request(app).get(`/api/v2/interventions`)
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
@@ -164,9 +166,15 @@ describe('Endpoint GET /api/v2/:type', () => {
             expect(res.body.data).to.be.an('array');
         }));
 
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[3].email, password: authData[3].password });
+        validTokens.noEntryUser = res.body.data.token;
+    }));
     it("should return 404 error if a user did not report a red-flag",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/red-flags`)
+            const res = await Chai.request(app).get(`/api/v2/red-flags`)
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.body.status).to.equal(404);
             expect(res.body).to.be.an('object');
@@ -175,7 +183,7 @@ describe('Endpoint GET /api/v2/:type', () => {
 
     it("should return 404 error if a user did not report an intervetnion",
         mochaAsync(async() => {
-            const res = await Chai.request(app).get(`/api/v1/interventions`)
+            const res = await Chai.request(app).get(`/api/v2/interventions`)
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.body.status).to.equal(404);
             expect(res.body).to.be.an('object');
@@ -308,6 +316,67 @@ describe('Endpoint PATCH /api/v2/:type/location', () => {
             const res = await Chai.request(app)
                 .patch("/api/v2/red-flags/1/location")
                 .send({ comment: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+});
+
+describe('Endpoint PATCH /api/v2/:type/comment', () => {
+
+    it("should let owner's entry comment edit red-flag",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/comment")
+                .send({ comment: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+
+    it("should not let other users edit red-flag's comment",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/comment")
+                .send({ comment: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should not edit red-flag's comment with wrong id",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1hghdfghd/comment")
+                .send({ comment: 'Another Logn and Lat' })
+                .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
+            expect(res.body.status).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.error).to.be.a('string');
+        }));
+
+    it("should let owner's entry comment edit intervention",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/interventions/2/comment")
+                .send({ comment: 'Another Comment' })
+                .set("Authorization", `Bearer ${validTokens.savedUser}`);
+            expect(res.status).to.equals(201);
+            expect(res.body).to.be.an("object");
+            expect(res.body).to.have.property('status');
+            expect(res.body).to.have.property('data');
+            expect(res.body.data).to.be.an('object');
+        }));
+    it("should not let owner's entry edit comment of red-flag with invalid request",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .patch("/api/v2/red-flags/1/comment")
+                .send({ location: 'Another Comment' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
             expect(res.status).to.equals(400);
             expect(res.body).to.be.an('object');

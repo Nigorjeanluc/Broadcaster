@@ -25,5 +25,6 @@ router.post('/:type', isLogged, isTypeAllowed, uploader.fields([{ name: 'images'
 router.get('/:type', isLogged, isTypeAllowed, asyncErrorHandler(EntryController.allEntries));
 router.get('/:type/:id', isTypeAllowed, asyncErrorHandler(EntryController.singleEntry));
 router.patch('/:type/:id/location', isLogged, isTypeAllowed, EntryValidator.editLocationValidator, asyncErrorHandler(EntryController.editLocation));
+router.patch('/:type/:id/comment', isLogged, isTypeAllowed, EntryValidator.editCommentValidator, asyncErrorHandler(EntryController.editComment));
 
 export default router;

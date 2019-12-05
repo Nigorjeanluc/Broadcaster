@@ -9,7 +9,7 @@ const mochaAsync = (fn) => {
         try {
             await fn();
         } catch (err) {
-            console.log(err.message);
+            console.error(err);
         }
     };
 };
@@ -24,6 +24,16 @@ describe('Endpoint /api/v2/auth/signup', () => {
             const res = await Chai.request(app)
                 .post("/api/v2/auth/signup")
                 .send(usersTester[0]);
+            expect(res.body.status).to.equal(201);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message).to.be.a('string');
+        }));
+
+    it("should create a new user account with no entry",
+        mochaAsync(async() => {
+            const res = await Chai.request(app)
+                .post("/api/v2/auth/signup")
+                .send(usersTester[3]);
             expect(res.body.status).to.equal(201);
             expect(res.body).to.be.an('object');
             expect(res.body.message).to.be.a('string');

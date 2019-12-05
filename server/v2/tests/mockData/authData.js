@@ -21,8 +21,8 @@ export default [{
 }, {
     firstname: 'Jean-Luc',
     lastname: 'Ndiramiye',
-    email: 'nigorjeadzxzanluc@gmail.com',
+    email: 'nigorjeadzxzafnluc@gmail.com',
     phoneNumber: '0789660036',
-    username: 'KingJay',
+    username: 'KingJayJay',
     password: '1234567890'
 }];
