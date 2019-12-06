@@ -27,5 +27,6 @@ router.get('/:type/:id', isTypeAllowed, asyncErrorHandler(EntryController.single
 router.patch('/:type/:id/location', isLogged, isTypeAllowed, EntryValidator.editLocationValidator, asyncErrorHandler(EntryController.editLocation));
 router.patch('/:type/:id/comment', isLogged, isTypeAllowed, EntryValidator.editCommentValidator, asyncErrorHandler(EntryController.editComment));
 router.delete('/:type/:id', isLogged, isTypeAllowed, asyncErrorHandler(EntryController.deleteEntry));
+router.patch('/:type/:id/status', isLogged, isTypeAllowed, EntryValidator.editStatusValidator, asyncErrorHandler(EntryController.editStatus));
 
 export default router;

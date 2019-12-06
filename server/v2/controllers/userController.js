@@ -21,7 +21,17 @@ class UserController {
 
         const user = new User(req.body);
 
-        const { id, firstname, lastname, email, username, is_admin } = await User.createUser(user);
+        const {
+            id,
+            firstname,
+            lastname,
+            email,
+            phone_number,
+            username,
+            is_admin,
+            password,
+            createdon
+        } = await User.createUser(user);
 
         return res.status(201).json({
             status: 201,
@@ -35,7 +45,10 @@ class UserController {
                 firstname: firstname,
                 lastname: lastname,
                 email: email,
-                username: username
+                username: username,
+                phone_number,
+                password,
+                createdOn: createdon
             }
         });
     }
@@ -50,7 +63,17 @@ class UserController {
         }
         const pswMatch = Auth.checkPassword(req.body.password, doesExist.rows[0].password);
         if (pswMatch) {
-            const { id, firstname, lastname, email, username, is_admin } = doesExist.rows[0];
+            const {
+                id,
+                firstname,
+                lastname,
+                email,
+                phone_number,
+                username,
+                is_admin,
+                password,
+                createdon
+            } = doesExist.rows[0];
 
             return res.status(200).json({
                 status: 200,
@@ -64,6 +87,9 @@ class UserController {
                     lastname: lastname,
                     email: email,
                     username: username,
+                    phone_number,
+                    password,
+                    createdOn: createdon
                 }
             });
         }

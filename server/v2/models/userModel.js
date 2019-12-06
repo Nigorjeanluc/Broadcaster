@@ -3,19 +3,23 @@ import pool from '../config/dbConnect';
 import queries from './queries';
 
 class User {
-    constructor({ firstname, lastname, email, phoneNumber, username, password }) {
+    constructor({ firstname, lastname, email, phoneNumber, username, password, isAdmin = false }) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.username = username;
-        this.isAdmin = false;
+        this.isAdmin = isAdmin;
         this.password = Auth.hashPassword(password);
         this.createdOn = new Date();
     }
 
     static emailExists(email) {
         return pool.query(queries.findOneUser, [email]);
+    }
+
+    static idExists(id) {
+        return pool.query(queries.findUserById, [id]);
     }
 
     static usernameExists(username) {

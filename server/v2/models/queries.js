@@ -47,6 +47,8 @@ const addEntry = `
 
 const findOneUser = `select * from users where email= $1`;
 
+const findUserById = `select * from users where id= $1`;
+
 const findOneUsername = `select * from users where username= $1`;
 
 const findSameType = `select * from entries where createdBy = $1 and type= $2 order by updatedOn desc`;
@@ -61,6 +63,10 @@ const updateComment = `UPDATE entries
                         SET comment = $2, updatedOn = $5 WHERE id = $1 and type = $3 and createdBy = $4
                         RETURNING * `;
 
+const updateStatus = `UPDATE entries
+                        SET status = $2, updatedOn = $4 WHERE id = $1 and type = $3
+                        RETURNING * `;
+
 const deleteEntry = `DELETE FROM entries WHERE id = $1 and type = $2 and createdBy = $3`;
 
 export default {
@@ -68,6 +74,7 @@ export default {
     createEntryTable,
     deleteAllTables,
     findOneUser,
+    findUserById,
     findOneUsername,
     findSameType,
     findOneEntry,
@@ -75,5 +82,6 @@ export default {
     addEntry,
     updateLocation,
     updateComment,
+    updateStatus,
     deleteEntry
 };

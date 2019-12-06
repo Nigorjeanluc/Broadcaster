@@ -4,7 +4,7 @@ import Auth from '../../helpers/authenticate';
 const validTokens = {
     savedUser: null,
     unsavedUser: Auth.generateToken('gakwererepacis@gmail.com', 1200, false),
-    noEntryUser: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvYmVydHJ0QGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE1NzI3NzIwOTB9.oZhkuh1fjUM-pEAKzxGskzbRPWLDES4LVOtXMLh9moI'
+    noEntryUser: null
 };
 
 const invalidToken = 'yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvYmVydEBnbWFpbC5jb20iLCJpZCI6MSwiaWF0IjoxNTcyNjg4MzEwfQ.dNSwMfMy52oCz68W-ou3TPi88e6iy5s8kAwkzT4u0Pw';
@@ -29,8 +29,15 @@ const entriesTester = [{
     comment: "A police officer who is in charge of the traffic are getting money from bad drivers. Not in our country of course"
 }];
 
+const adminEntry = {
+    id: null,
+    type: null,
+    status: null
+};
+
 export default {
     validTokens,
     invalidToken,
-    entriesTester
+    entriesTester,
+    adminEntry
 }

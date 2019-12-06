@@ -37,7 +37,7 @@ class Entry {
 
     static findOneEntry(id, type) {
         return pool.query(queries.findOneEntry, [
-            id, type
+            parseInt(id, 10), type
         ]);
     }
 
@@ -55,6 +55,14 @@ class Entry {
             parseInt(id, 10),
             comment, type,
             parseInt(userId, 10),
+            new Date()
+        ]);
+    }
+
+    static updateStatus(id, status, type) {
+        return pool.query(queries.updateStatus, [
+            parseInt(id, 10),
+            status, type,
             new Date()
         ]);
     }
