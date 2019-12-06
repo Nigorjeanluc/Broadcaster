@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
 import v1Routes from './v1/routes/v1Routes';
+import v2Routes from './v2/routes/v2Routes';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 app.use('/uploads', express.static('uploads'));
 app.use('/api/v1', v1Routes);
+app.use('/api/v2', v2Routes);
 
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'Welcome to Broadcaster App' });
@@ -23,7 +25,10 @@ app.get('/', (req, res) => {
 
 app.use((req, res) => {
     res.status(404);
-    res.json({ error: 'Endpoint not found' });
+    res.json({
+        status: 404,
+        error: 'Endpoint not found'
+    });
 });
 
 app.listen(port, () => {

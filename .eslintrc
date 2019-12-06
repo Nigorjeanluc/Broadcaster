@@ -28,6 +28,9 @@
         "no-process-exit": "off",
         "object-shorthand": "off",
         "consistent-return": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "import/no-mutable-exports": "off",
+        "no-console":"off",
+        "camelcase": "off"
     }
 }

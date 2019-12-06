@@ -7,7 +7,7 @@ dotenv.config();
 class Auth {
     static generateToken(email, id, isAdmin) {
         return jwt.sign({ email, id, isAdmin },
-            process.env.KEY, { expiresIn: '3h' }
+            process.env.KEY
         );
     }
 

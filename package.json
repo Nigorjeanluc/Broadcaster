@@ -4,14 +4,17 @@
     "description": "Broadcaster App is used to report corruption cases and the need of authorities intervetion in African countries",
     "main": "app.js",
     "scripts": {
-        "start": "npm run build && node --require @babel/polyfill dist/app.js",
-        "test": "nyc --reporter=text --reporter=lcov mocha --require @babel/register --require @babel/polyfill ./server/v1/tests/*.spec.js --exit",
+        "start": "npm run build && npm run createtables && node --require @babel/polyfill dist/app.js",
+        "test": "npm run droptables && npm run createtables && cross-env NODE_ENV=isTesting nyc --reporter=text --reporter=lcov mocha --require @babel/register --require @babel/polyfill ./server/v2/tests/*.spec.js ./server/v1/tests/*.spec.js --exit",
         "dev": "nodemon --exec babel-node ./server/app.js",
-        "createtables": "node --require @babel/polyfill --require @babel/register server/v2/models/addTables",
-        "droptables": "node --require @babel/polyfill --require @babel/register server/v2/models/deleteTables",
         "coveralls": "npm test && nyc report --reporter=text-lcov | coveralls",
         "build": "babel server -d dist",
-        "lint": "eslint server"
+        "lint": "eslint server",
+        "createtables": "node --require @babel/polyfill --require @babel/register server/v2/models/addTables",
+        "droptables": "node --require @babel/polyfill --require @babel/register server/v2/models/deleteTables"
+    },
+    "nyc": {
+        "exclude": "server/v2/tests/*.spec.js"
     },
     "repository": {
         "type": "git",
@@ -52,6 +55,7 @@
         "moment": "^2.24.0",
         "morgan": "^1.9.1",
         "multer": "^1.4.2",
+        "nodemailer": "^6.4.0",
         "nodemon": "^1.19.2",
         "pg": "^7.12.1",
         "uuid": "^3.3.3"
