@@ -47,6 +47,8 @@ const addEntry = `
 
 const findOneUser = `select * from users where email= $1`;
 
+const findUserById = `select * from users where id= $1`;
+
 const findOneUsername = `select * from users where username= $1`;
 
 const findSameType = `select * from entries where createdBy = $1 and type= $2 order by updatedOn desc`;
@@ -72,6 +74,7 @@ export default {
     createEntryTable,
     deleteAllTables,
     findOneUser,
+    findUserById,
     findOneUsername,
     findSameType,
     findOneEntry,

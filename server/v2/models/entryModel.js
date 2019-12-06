@@ -37,7 +37,7 @@ class Entry {
 
     static findOneEntry(id, type) {
         return pool.query(queries.findOneEntry, [
-            id, type
+            parseInt(id, 10), type
         ]);
     }
 

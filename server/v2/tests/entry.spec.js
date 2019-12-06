@@ -19,7 +19,7 @@ const mochaAsync = (fn) => {
 };
 
 const { expect } = Chai;
-const { validTokens, invalidToken, entriesTester, adminEntryId } = entryData;
+const { validTokens, invalidToken, entriesTester, adminEntry } = entryData;
 
 Chai.use(chaiHttp);
 
@@ -47,7 +47,7 @@ describe('Endpoint POST /api/v2/:type', () => {
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
-            expect(res.body.data).to.be.an('array').with.lengthOf(1);
+            expect(res.body.data).to.be.an('object');
         })
     );
     it("should create a new intervention when user has an account",
@@ -65,7 +65,7 @@ describe('Endpoint POST /api/v2/:type', () => {
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
-            expect(res.body.data).to.be.an('array').with.lengthOf(1);
+            expect(res.body.data).to.be.an('object');
         })
     );
 
@@ -233,6 +233,7 @@ describe('Endpoint GET /api/v2/:type/:id', () => {
     it("should not retrieve unsaved intervention entries",
         mochaAsync(async() => {
             const res = await Chai.request(app).get(`/api/v2/interventions/1000`);
+            console.log(res.status);
             expect(res.body.status).to.equal(404);
             expect(res.body).to.be.an('object');
             expect(res.body.error).to.be.a('string');
@@ -261,7 +262,7 @@ describe('Endpoint PATCH /api/v2/:type/location', () => {
                 .patch("/api/v2/red-flags/1/location")
                 .send({ location: 'Another Logn and Lat' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            expect(res.status).to.equals(201);
+            expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
@@ -303,7 +304,7 @@ describe('Endpoint PATCH /api/v2/:type/location', () => {
                 .patch("/api/v2/interventions/2/location")
                 .send({ location: 'Another Logn and Lat' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            expect(res.status).to.equals(201);
+            expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
@@ -330,7 +331,7 @@ describe('Endpoint PATCH /api/v2/:type/comment', () => {
                 .patch("/api/v2/red-flags/1/comment")
                 .send({ comment: 'Another Comment' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            expect(res.status).to.equals(201);
+            expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
@@ -365,7 +366,7 @@ describe('Endpoint PATCH /api/v2/:type/comment', () => {
                 .patch("/api/v2/interventions/2/comment")
                 .send({ comment: 'Another Comment' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            expect(res.status).to.equals(201);
+            expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
             expect(res.body).to.have.property('data');
@@ -396,15 +397,14 @@ describe('Endpoint PATCH /api/v2/:type/status', () => {
             .attach('images', fs.readFileSync(path.join(__dirname, '../../../uploads/andela.jpg')), 'andela.jpg')
             .attach('videos', fs.readFileSync(path.join(__dirname, '../../../uploads/vids.mp4')), 'vids.mp4')
             .field('comment', entriesTester[0].comment);
-        adminEntryId = res.body.data.id;
+        adminEntry.id = res.body.data.id;
     }));
     it("should let only admin edit entry's status",
         mochaAsync(async() => {
             const res = await Chai.request(app)
-                .patch(`/api/v2/red-flags/${adminEntryId}/status`)
+                .patch(`/api/v2/red-flags/${adminEntry.id}/status`)
                 .send({ status: 'Resolved' })
                 .set("Authorization", `Bearer ${validTokens.savedUser}`);
-            console.log(res.body.error);
             expect(res.status).to.equals(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property('status');
@@ -437,7 +437,7 @@ describe('Endpoint PATCH /api/v2/:type/status', () => {
     it("should not let simple user edit entry's status",
         mochaAsync(async() => {
             const res = await Chai.request(app)
-                .patch(`/api/v2/red-flags/${adminEntryId}/status`)
+                .patch(`/api/v2/red-flags/${adminEntry.id}/status`)
                 .send({ status: 'Resolved' })
                 .set("Authorization", `Bearer ${validTokens.noEntryUser}`);
             expect(res.status).to.equals(403);

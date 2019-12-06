@@ -18,6 +18,10 @@ class User {
         return pool.query(queries.findOneUser, [email]);
     }
 
+    static idExists(id) {
+        return pool.query(queries.findUserById, [id]);
+    }
+
     static usernameExists(username) {
         return pool.query(queries.findOneUsername, [username]);
     }

@@ -1,4 +1,5 @@
 import Entry from '../models/entryModel';
+import User from '../models/userModel';
 
 class EntryController {
     static async createEntry(req, res) {
@@ -10,12 +11,22 @@ class EntryController {
 
         const addedEntry = await Entry.createEntry(entry);
 
+        const user = await User.idExists(addedEntry.createdby);
+
         return res.status(201).json({
             status: 201,
-            data: [{
+            message: `Created ${addedEntry.type} record`,
+            data: {
                 id: addedEntry.id,
-                message: `Created ${addedEntry.type} record`
-            }]
+                title: addedEntry.title,
+                status: addedEntry.status,
+                type: addedEntry.type,
+                images: addedEntry.images,
+                videos: addedEntry.videos,
+                comment: addedEntry.comment,
+                createdBy: user.rows[0].username,
+                createdOn: addedEntry.createdon
+            }
         });
     }
 
@@ -50,9 +61,20 @@ class EntryController {
         const data = await Entry.findOneEntry(id, type);
 
         if (data.rowCount === 1) {
+            const user = await User.idExists(data.rows[0].createdby);
             return res.status(200).json({
                 status: 200,
-                data: data.rows[0]
+                data: {
+                    id: data.rows[0].id,
+                    title: data.rows[0].title,
+                    status: data.rows[0].status,
+                    type: data.rows[0].type,
+                    images: data.rows[0].images,
+                    videos: data.rows[0].videos,
+                    comment: data.rows[0].comment,
+                    createdBy: user.rows[0].username,
+                    createdOn: data.rows[0].createdon
+                }
             });
         }
         return res.status(404).json({
@@ -74,15 +96,22 @@ class EntryController {
         const data = await Entry.updateLocation(id, req.body.location, type, req.userData.id);
 
         if (data.rowCount === 1) {
-            return res.status(201).json({
-                status: 201,
+            const user = await User.idExists(data.rows[0].createdby);
+            return res.status(200).json({
+                status: 200,
+                message: `Updated ${type} record's location`,
                 data: {
                     id: data.rows[0].id,
                     title: data.rows[0].title,
-                    createdOn: data.rows[0].createdon,
-                    updatedOn: data.rows[0].updatedon,
+                    type: data.rows[0].type,
                     location: data.rows[0].location,
-                    message: `Updated ${type} record's location`
+                    status: data.rows[0].status,
+                    images: data.rows[0].images,
+                    videos: data.rows[0].videos,
+                    comment: data.rows[0].comment,
+                    createdBy: user.rows[0].username,
+                    createdOn: data.rows[0].createdon,
+                    updatedOn: data.rows[0].updatedon
                 }
             });
         }
@@ -105,15 +134,23 @@ class EntryController {
         const data = await Entry.updateComment(id, req.body.comment, type, req.userData.id);
 
         if (data.rowCount === 1) {
-            return res.status(201).json({
-                status: 201,
+
+            const user = await User.idExists(data.rows[0].createdby);
+            return res.status(200).json({
+                status: 200,
+                message: `Updated ${type} record's comment`,
                 data: {
                     id: data.rows[0].id,
                     title: data.rows[0].title,
-                    createdOn: data.rows[0].createdon,
-                    updatedOn: data.rows[0].updatedon,
+                    type: data.rows[0].type,
+                    location: data.rows[0].location,
+                    status: data.rows[0].status,
+                    images: data.rows[0].images,
+                    videos: data.rows[0].videos,
                     comment: data.rows[0].comment,
-                    message: `Updated ${type} record's comment`
+                    createdBy: user.rows[0].username,
+                    createdOn: data.rows[0].createdon,
+                    updatedOn: data.rows[0].updatedon
                 }
             });
         }
@@ -146,7 +183,7 @@ class EntryController {
         });
     }
 
-    static editStatus(req, res) {
+    static async editStatus(req, res) {
         const type = req.params.type.split('s')[0];
         const { id } = req.params;
         const { isAdmin } = req.userData;
@@ -158,16 +195,27 @@ class EntryController {
             });
         }
 
-        const data = Entry.findOneEntry(id, type);
+        const data = await Entry.findOneEntry(id, type);
 
         if (data.rowCount === 1) {
             if (isAdmin) {
-                data.status = req.body.status;
+                const change = await Entry.updateStatus(id, req.body.status, type);
+                const user = await User.idExists(data.rows[0].createdby);
                 return res.status(200).json({
                     status: 200,
+                    message: `Updated ${type} record's status`,
                     data: {
-                        id: data.id,
-                        message: `Updated ${type} record's status`
+                        id: change.rows[0].id,
+                        title: change.rows[0].title,
+                        type: change.rows[0].type,
+                        location: change.rows[0].location,
+                        status: change.rows[0].status,
+                        images: change.rows[0].images,
+                        videos: change.rows[0].videos,
+                        comment: change.rows[0].comment,
+                        createdBy: user.rows[0].username,
+                        createdOn: change.rows[0].createdon,
+                        updatedOn: change.rows[0].updatedon
                     }
                 });
             }
