@@ -399,6 +399,13 @@ describe('Endpoint PATCH /api/v2/:type/status', () => {
             .field('comment', entriesTester[0].comment);
         adminEntry.id = res.body.data.id;
     }));
+    before(mochaAsync(async() => {
+        const res = await Chai.request(app)
+            .post("/api/v2/auth/signin")
+            .send({ email: authData[0].email, password: authData[0].password });
+        validTokens.savedUser = res.body.data.token;
+    }));
+
     it("should let only admin edit entry's status",
         mochaAsync(async() => {
             const res = await Chai.request(app)
