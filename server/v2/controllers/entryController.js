@@ -1,5 +1,8 @@
+import nodemailer from 'nodemailer';
+
 import Entry from '../models/entryModel';
 import User from '../models/userModel';
+import checkId from '../helpers/idChecker';
 
 class EntryController {
     static async createEntry(req, res) {
@@ -51,7 +54,7 @@ class EntryController {
     static async singleEntry(req, res) {
         const type = req.params.type.split('s')[0];
         const { id } = req.params;
-        if (isNaN(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
@@ -86,7 +89,7 @@ class EntryController {
     static async editLocation(req, res) {
         const type = req.params.type.split('s')[0];
         const { id } = req.params;
-        if (isNaN(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
@@ -124,7 +127,7 @@ class EntryController {
     static async editComment(req, res) {
         const type = req.params.type.split('s')[0];
         const { id } = req.params;
-        if (isNaN(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
@@ -163,7 +166,7 @@ class EntryController {
     static async deleteEntry(req, res) {
         const type = req.params.type.split('s')[0];
         const { id } = req.params;
-        if (isNaN(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
@@ -188,7 +191,7 @@ class EntryController {
         const { id } = req.params;
         const { isAdmin } = req.userData;
 
-        if (isNaN(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
@@ -201,22 +204,47 @@ class EntryController {
             if (isAdmin) {
                 const change = await Entry.updateStatus(id, req.body.status, type);
                 const user = await User.idExists(data.rows[0].createdby);
-                return res.status(200).json({
-                    status: 200,
-                    message: `Updated ${type} record's status`,
-                    data: {
-                        id: change.rows[0].id,
-                        title: change.rows[0].title,
-                        type: change.rows[0].type,
-                        location: change.rows[0].location,
-                        status: change.rows[0].status,
-                        images: change.rows[0].images,
-                        videos: change.rows[0].videos,
-                        comment: change.rows[0].comment,
-                        createdBy: user.rows[0].username,
-                        createdOn: change.rows[0].createdon,
-                        updatedOn: change.rows[0].updatedon
+
+                const transport = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        user: "nigorjeanluc@gmail.com",
+                        pass: "nd210694"
                     }
+                });
+                const mailOptio = {
+                    from: "nigorjeanluc@gmail.com",
+                    to: `${user.rows[0].email}`,
+                    subject: "Status update",
+                    text: `This is to inform you that the status of your ${data.rows[0].type} about "${data.rows[0].title}" was updated  to ${data.rows[0].status}`
+                };
+
+                // eslint-disable-next-line no-unused-vars
+                await transport.sendMail(mailOptio, (err, json) => {
+                    if (err) {
+                        return res.status(400).json({
+                            status: 400,
+                            error: "there was an error while sending the email to user"
+                        });
+                    }
+
+                    return res.status(200).json({
+                        status: 200,
+                        message: `Updated ${type} record's status`,
+                        data: {
+                            id: change.rows[0].id,
+                            title: change.rows[0].title,
+                            type: change.rows[0].type,
+                            location: change.rows[0].location,
+                            status: change.rows[0].status,
+                            images: change.rows[0].images,
+                            videos: change.rows[0].videos,
+                            comment: change.rows[0].comment,
+                            createdBy: user.rows[0].username,
+                            createdOn: change.rows[0].createdon,
+                            updatedOn: change.rows[0].updatedon
+                        }
+                    });
                 });
             }
 
