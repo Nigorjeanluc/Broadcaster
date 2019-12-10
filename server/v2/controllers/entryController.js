@@ -19,12 +19,12 @@ class EntryController {
         const transport = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "bihireb1@gmail.com",
-                pass: "bobo12345"
+                user: "nigorjeanluc@gmail.com",
+                pass: "nd210694"
             }
         });
         const mailOptio = {
-            from: "bihireb1@gmail.com",
+            from: "nigorjeanluc@gmail.com",
             to: `${user.rows[0].email}`,
             subject: "Status update",
             text: `This is to inform you that the status of your ${addedEntry.type} about "${addedEntry.title}" was updated  to ${addedEntry.status}`
