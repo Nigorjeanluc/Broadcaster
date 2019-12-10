@@ -189,7 +189,7 @@ class EntryController {
         const { id } = req.params;
         const { isAdmin } = req.userData;
 
-        if (isNaN(id)  || !checkId(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
