@@ -27,7 +27,7 @@ class EntryController {
             from: "bihireb1@gmail.com",
             to: `${user.rows[0].email}`,
             subject: "Status update",
-            text: `This is to inform you that the status of your ${addedEntry.rows[0].type} about "${addedEntry.rows[0].title}" was updated  to ${addedEntry.rows[0].status}`
+            text: `This is to inform you that the status of your ${addedEntry.type} about "${addedEntry.title}" was updated  to ${addedEntry.status}`
         };
         await transport.sendMail(mailOptio, (err, json) => {
             // if (err)
