@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 import Entry from '../models/entryModel';
 import User from '../models/userModel';
 import checkId from '../helpers/idChecker';
@@ -13,6 +15,28 @@ class EntryController {
         const addedEntry = await Entry.createEntry(entry);
 
         const user = await User.idExists(addedEntry.createdby);
+
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "bihireb1@gmail.com",
+                pass: "bobo12345"
+            }
+        });
+        const mailOptio = {
+            from: "bihireb1@gmail.com",
+            to: `${user.rows[0].email}`,
+            subject: "Status update",
+            text: `This is to inform you that the status of your ${addedEntry.rows[0].type} about "${addedEntry.rows[0].title}" was updated  to ${addedEntry.rows[0].status}`
+        };
+        await transport.sendMail(mailOptio, (err, json) => {
+            // if (err)
+            //     return responseMsg.errorMsg(
+            //         res,
+            //         400,
+            //         "there was an error while sending the email to user"
+            //     );
+        });
 
         return res.status(201).json({
             status: 201,
