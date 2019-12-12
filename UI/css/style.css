@@ -241,6 +241,8 @@
 }
 
 .content .entry-box .header {
+    display: inline-block;
+    width: 100%;
     font-family: 'Berkshire Swash', cursive;
     font-weight: 500;
     line-height: 50px;
@@ -249,6 +251,7 @@
 
 .content .entry-box .header h1 {
     font-size: 1.2em;
+    width: 90%;
 }
 
 .content .entry-box .header h1 span {
@@ -537,6 +540,13 @@
 @media screen and (max-width: 480px) {
     .content .entry-box .body .row {
         display: inline-block;
+    }
+    .content .entry-box .header h1 {
+        font-size: 0.9em;
+        line-height: 20px;
+    }
+    .content .entry-box .body a {
+        font-size: 0.7em;
     }
 }
 

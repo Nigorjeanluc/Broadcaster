@@ -29,6 +29,7 @@ class EntryController {
             subject: "Status update",
             text: `This is to inform you that the status of your ${addedEntry.type} about "${addedEntry.title}" was updated  to ${addedEntry.status}`
         };
+        // eslint-disable-next-line no-unused-vars
         await transport.sendMail(mailOptio, (err, json) => {
             // if (err)
             //     return responseMsg.errorMsg(
