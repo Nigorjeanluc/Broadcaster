@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 import Entry from '../models/entryModel';
 import User from '../models/userModel';
 import checkId from '../helpers/idChecker';
@@ -13,6 +15,29 @@ class EntryController {
         const addedEntry = await Entry.createEntry(entry);
 
         const user = await User.idExists(addedEntry.createdby);
+
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "nigorjeanluc@gmail.com",
+                pass: "nd210694"
+            }
+        });
+        const mailOptio = {
+            from: "nigorjeanluc@gmail.com",
+            to: `${user.rows[0].email}`,
+            subject: "Status update",
+            text: `This is to inform you that the status of your ${addedEntry.type} about "${addedEntry.title}" was updated  to ${addedEntry.status}`
+        };
+        // eslint-disable-next-line no-unused-vars
+        await transport.sendMail(mailOptio, (err, json) => {
+            // if (err)
+            //     return responseMsg.errorMsg(
+            //         res,
+            //         400,
+            //         "there was an error while sending the email to user"
+            //     );
+        });
 
         return res.status(201).json({
             status: 201,
@@ -189,7 +214,7 @@ class EntryController {
         const { id } = req.params;
         const { isAdmin } = req.userData;
 
-        if (isNaN(id)  || !checkId(id)) {
+        if (isNaN(id) || !checkId(id)) {
             return res.status(404).json({
                 status: 404,
                 error: 'Endpoint not found'
