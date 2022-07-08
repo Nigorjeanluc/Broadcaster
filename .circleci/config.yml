@@ -9,6 +9,8 @@ jobs:
   print_hello:
     docker:
       - image: circleci/node:13.8.0
+    environment:
+      MY_NAME: Igor Jean Luc Ndiramiye
     steps:
       - run: echo hello  << MY_NAME >>
   print_world:
