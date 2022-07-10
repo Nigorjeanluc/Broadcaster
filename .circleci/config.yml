@@ -93,18 +93,41 @@ version: 2.1
 #    Exercise 4 for Job Failures and when: on_fail directive
 #########################
 
+# jobs:
+#   my_job:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - run: exit 1
+#       - run:
+#           name: on error
+#           command: echo "Hello Error!"
+#           when: on_fail
+
+# workflows:
+#   my_workflow:
+#     jobs:
+#       - my_job
+
+################################################################
+#      Infrastructure creation
+################################################################
+
 jobs:
-  my_job:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: exit 1
-      - run:
-          name: on error
-          command: echo "Hello Error!"
-          when: on_fail
+  create_infrastructure: 
+        docker:
+          - image: amazon/aws-cli
+        steps:
+          - checkout
+          - run:
+              name: Create Cloudformation Stack
+              command: |
+                aws cloudformation deploy \
+                  --template-file template.yml \
+                  --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                  --region us-east-1
 
 workflows:
   my_workflow:
-    jobs:
-      - my_job
+      jobs:
+        - create_infrastructure
